@@ -5,14 +5,8 @@ import (
 	"testing"
 )
 
-// needs more testing...
-
 func TestBreadthFirstSearch(t *testing.T) {
 	tests := loadTestsFromJSON("testdata/bfs-tests.json", []string{"Searches"})
-
-	// if len(errors) != 0 {
-	// 	t.Error(manyErrors{errors})
-	// }
 
 	for _, test := range tests {
 		for source, searchResult := range test.Searches {
@@ -32,10 +26,6 @@ func TestBreadthFirstSearch(t *testing.T) {
 
 func TestEdgeCount(t *testing.T) {
 	tests := loadTestsFromJSON("testdata/bfs-tests.json", []string{"EdgeCount"})
-
-	// if len(errors) != 0 {
-	// 	t.Error(manyErrors{errors})
-	// }
 
 	for _, test := range tests {
 		err := test.validate()

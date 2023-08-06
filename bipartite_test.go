@@ -7,9 +7,6 @@ import (
 func TestFindTwColoring(t *testing.T) {
 	tests := loadTestsFromJSON("testdata/col-tests.json", []string{"Bipartite"})
 
-	// if len(errors) != 0 {
-	// 	t.Error(manyErrors{errors})
-	// }
 	if len(tests) == 0 {
 		t.Errorf("no tests generated")
 	}

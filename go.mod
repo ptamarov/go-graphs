@@ -1,3 +1,3 @@
-module github.com/ptamarov/skiena-code
+module github.com/ptamarov/go-graphs
 
 go 1.20
