@@ -19,4 +19,13 @@ func TestExample(t *testing.T) {
 
 	search := g.BreadthFirstSearchFrom(1)
 	fmt.Println(search)
+
+	g, err = graph.NewDirGraph(5, map[int][]int{0: {2, 4}, 1: {0}, 2: {1}, 3: {0}, 4: {3}})
+
+	if err != nil {
+		t.Error(err)
+	}
+
+	search = g.BreadthFirstSearchFrom(1)
+	fmt.Println(search)
 }

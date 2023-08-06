@@ -99,11 +99,11 @@ func (*Graph).DistanceFrom(source int) map[int]int
 shortest distance to the source vertex. A value of `-1` reports the vertex is
 unreachable from source. 
 
-#### func `EdgeNumber`
+#### func `NumberOfEdges`
 ```go
-func (g *Graph).EdgeNumber() int
+func (g *Graph).NumberOfEdges() int
 ```
-`EdgeNumber` counts the number of edges of the graph.
+`NumberOfEdges` returns the number of edges of the graph.
 
 #### func `FindTwoColoring`
 ```go

@@ -38,7 +38,7 @@ func TestEdgeCount(t *testing.T) {
 			t.Errorf("while generating graph: %s", err)
 		}
 
-		got, want := g.EdgeNumber(), test.ExpectedEdgeCount
+		got, want := g.NumberOfEdges(), test.ExpectedEdgeCount
 		if got != want {
 			t.Errorf("Wanted %d edges but got %d for %s", want, got, name)
 		}

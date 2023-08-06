@@ -15,6 +15,16 @@ func NewGraph(NumVertices int, Adj map[int][]int) (Graph, error) {
 		var z Graph
 		return z, err
 	}
+	var count int
+	for i := range g.adj {
+		count += len(g.adj[i])
+	}
+
+	if g.directed {
+		g.numEdges = count
+	} else {
+		g.numEdges = count / 2
+	}
 	return g, nil
 }
 
@@ -25,6 +35,18 @@ func NewDirGraph(NumVertices int, Adj map[int][]int) (Graph, error) {
 		var z Graph
 		return z, err
 	}
+
+	var count int
+	for i := range g.adj {
+		count += len(g.adj[i])
+	}
+
+	if g.directed {
+		g.numEdges = count
+	} else {
+		g.numEdges = count / 2
+	}
+
 	return g, nil
 }
 
@@ -46,11 +68,8 @@ func (g *Graph) ConnectedComponents() [][]int {
 	return g.components
 }
 
-// EdgeNumber counts the number of edges in the graph by running iterated BFSs.
-func (g *Graph) EdgeNumber() int {
-	if g.numEdges == 0 {
-		g.updateConnectedComponents(true)
-	}
+// NumberOfEdges counts the number of edges in the graph by running iterated BFSs.
+func (g *Graph) NumberOfEdges() int {
 	return g.numEdges
 }
 
