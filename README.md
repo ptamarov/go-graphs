@@ -2,14 +2,14 @@
 
 This a Go package to work with simple (un)directed graphs.
 
-## Introduction
+## Initialization
 
-A graph object is defined by specifying:
+A graph object is defined by specifying
 
 1. a number of vertices `NumVertices`,
-2. a map `Adj` assigning each integer in `[0,n)` to its array of neighbours,
+2. a map `Adj` assigning each integer in `[0,n)` to its array of neighbours.
 
-## Initialization
+A graph can be constructed with any of the following functions:
 
 ### func `NewGraph`
 ```go
@@ -79,14 +79,14 @@ and returns the discovered vertices in the resulting traversal order.
 
 #### func `DepthFirstSearchFrom`
 ```go
-func (*Graph).DepthFirstSearchFrom(source int) []int
+func (g *Graph).DepthFirstSearchFrom(source int) []int
 ```
 `DepthFirstSearchFrom` performs a depth first search from the source vertex and 
 returns the discovered vertices in the resulting traversal order.  
 
 #### func `ConnectedComponents`
 ```go
-func (*Graph).ConnectedComponents() [][]int
+func (g *Graph).ConnectedComponents() [][]int
 ```
 `ConnectedComponents` returns an array of arrays, where each individual array 
 corresponds to a single connected component of the graph.
@@ -101,13 +101,13 @@ unreachable from source.
 
 #### func `EdgeNumber`
 ```go
-func (*Graph).EdgeNumber() int
+func (g *Graph).EdgeNumber() int
 ```
 `EdgeNumber` counts the number of edges of the graph.
 
 #### func `FindTwoColoring`
 ```go
-func (*Graph).FindTwoColoring() (map[int]int, error)
+func (g *Graph).FindTwoColoring() (map[int]int, error)
 ```
 `FindTwoColoring` attempts to find a two coloring of the graph. It returns
 a map assigning each node to `0` or `1` if successful and no error, or an 
@@ -115,7 +115,7 @@ empty map and an error reporting a problematic edge if the attempt fails.
 
 #### func `ShortestDistanceTreeFrom`
 ```go
-func (*Graph).ShortestDistanceTreeFrom(source int) map[int]int
+func (g *Graph).ShortestDistanceTreeFrom(source int) map[int]int
 ```
 `ShortestDistanceTreeFrom` returns a map assigning a vertex to its parent
 in a shortest distance tree to the source. Any unreachable vertex is assigned
@@ -123,7 +123,7 @@ the parent parent `-1`; source is also assigned the parent `-1`.
 
 #### func `ShortestPathsFrom`
 ```go
-func (*Graph).ShortestPathsFrom(source int) map[int][]int
+func (g *Graph).ShortestPathsFrom(source int) map[int][]int
 ```
 `ShortestPathsFrom` returns a map sending a node to a shortest
 path to the source node. An empty path indicated that the node
