@@ -1,6 +1,6 @@
 {
     "test_a": {
-        "Bipartite": true,
+        "ExpectedBipartite": true,
         "Name": "four star",
         "NumVertices": 5,
         "Directed": false,
@@ -26,7 +26,7 @@
         }
     },
     "test_b": {
-        "Bipartite": true,
+        "ExpectedBipartite": true,
         "Name": "square with bisected diagonal",
         "NumVertices": 5,
         "Directed": false,
@@ -55,7 +55,7 @@
         }
     },
     "test_d": {
-        "Bipartite": true,
+        "ExpectedBipartite": true,
         "Name": "x wing",
         "NumVertices": 6,
         "Directed": false,
@@ -91,7 +91,7 @@
         }
     },
     "test_c": {
-        "Bipartite": false,
+        "ExpectedBipartite": false,
         "Name": "cat face",
         "NumVertices": 6,
         "Directed": false,
@@ -127,7 +127,7 @@
         }
     },
     "test_e": {
-        "Bipartite": false,
+        "ExpectedBipartite": false,
         "Name": "three cycle",
         "NumVertices": 3,
         "Directed": false,
@@ -147,7 +147,7 @@
         }
     },
     "test_f": {
-        "Bipartite": true,
+        "ExpectedBipartite": true,
         "Name": "four cycle",
         "NumVertices": 4,
         "Directed": false,
@@ -171,7 +171,7 @@
         }
     },
     "test_g": {
-        "Bipartite": false,
+        "ExpectedBipartite": false,
         "Name": "five cycle",
         "NumVertices": 5,
         "Directed": false,
@@ -199,7 +199,7 @@
         }
     },
     "test_h": {
-        "Bipartite": true,
+        "ExpectedBipartite": true,
         "Name": "six cycle",
         "NumVertices": 6,
         "Directed": false,

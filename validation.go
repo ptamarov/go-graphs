@@ -11,19 +11,19 @@ import "fmt"
 //   - Check that no node has repeated neighbours.
 func (g *graph) validate() error {
 
-	if g.NumVertices == 0 {
+	if g.numVertices == 0 {
 		return fmt.Errorf("graph cannot have no vertices")
 	}
 
-	if len(g.Adj) != g.NumVertices {
-		return fmt.Errorf("adjacency list has length %d but have %d vertices", len(g.Adj), g.NumVertices)
+	if len(g.adj) != g.numVertices {
+		return fmt.Errorf("adjacency list has length %d but have %d vertices", len(g.adj), g.numVertices)
 	}
 
-	for current := 0; current < g.NumVertices; current++ {
+	for current := 0; current < g.numVertices; current++ {
 		var ok bool
 		var children []int
 
-		children, ok = g.Adj[current]
+		children, ok = g.adj[current]
 
 		if !ok {
 			return fmt.Errorf("node %d missing in adjacency list", current)
@@ -32,8 +32,8 @@ func (g *graph) validate() error {
 		for _, child := range children {
 			seen := make(map[int]bool)
 
-			if child < 0 || child >= g.NumVertices {
-				return fmt.Errorf("node %d has neighbour %d out of bounds [%d]", current, child, g.NumVertices)
+			if child < 0 || child >= g.numVertices {
+				return fmt.Errorf("node %d has neighbour %d out of bounds [%d]", current, child, g.numVertices)
 			}
 
 			if child == current {

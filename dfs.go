@@ -6,11 +6,11 @@ func (gr *graph) depthFirstSearchFromWithSubroutines(v int) {
 		finished bool
 	)
 
-	processed := make(map[int]bool, gr.NumVertices)
-	discovered := make(map[int]bool, gr.NumVertices)
-	entry_time := make(map[int]int, gr.NumVertices)
-	exit_time := make(map[int]int, gr.NumVertices)
-	parent := make(map[int]int, gr.NumVertices)
+	processed := make(map[int]bool, gr.numVertices)
+	discovered := make(map[int]bool, gr.numVertices)
+	entry_time := make(map[int]int, gr.numVertices)
+	exit_time := make(map[int]int, gr.numVertices)
+	parent := make(map[int]int, gr.numVertices)
 
 	discovered[v] = true
 	time++
@@ -22,11 +22,11 @@ func (gr *graph) depthFirstSearchFromWithSubroutines(v int) {
 		return
 	}
 
-	for _, y := range gr.Adj[v] {
+	for _, y := range gr.adj[v] {
 		if !discovered[y] {
 			parent[y] = v
 			processEdge(v, y)
-		} else if !processed[y] || gr.Directed {
+		} else if !processed[y] || gr.directed {
 			finished = processEdge(v, y)
 			if finished { // subroutine could modify finished param
 				return

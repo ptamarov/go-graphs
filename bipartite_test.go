@@ -5,24 +5,24 @@ import (
 )
 
 func TestFindTwColoring(t *testing.T) {
-	tests := loadTestsFromJSON("testdata/col-tests.json", []string{"Bipartite"})
+	tests := loadTestsFromJSON("testdata/col-tests.json")
 
 	if len(tests) == 0 {
 		t.Errorf("no tests generated")
 	}
 
-	for _, test := range tests {
-		t.Run(test.Name, func(t *testing.T) {
-			err := test.validate()
+	for name, test := range tests {
+		t.Run(name, func(t *testing.T) {
+			g, err := NewGraph(test.NumVertices, test.Adj)
 			if err != nil {
-				t.Errorf("invalid input [%s]", test.Name)
+				t.Errorf("invalid input [%s]", name)
 			}
 
-			_, err = test.FindTwoColoring()
+			_, err = g.FindTwoColoring()
 			gotErr := (err == nil)
-			wantErr := test.Bipartite
+			wantErr := test.ExpectedBipartite
 			if wantErr != gotErr {
-				t.Errorf("Got %s but was expecting %t", err, test.Bipartite)
+				t.Errorf("Got %s but was expecting %t", err, test.ExpectedBipartite)
 			}
 		})
 	}

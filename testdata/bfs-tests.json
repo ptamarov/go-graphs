@@ -1,6 +1,6 @@
 {
     "test_a": {
-        "Searches": {
+        "ExpectedSearches": {
             "0": [
                 0,
                 1,
@@ -39,8 +39,7 @@
         },
         "Name": "four star",
         "NumVertices": 5,
-        "NumEdges": 4,
-        "EdgeCount": 4,
+        "ExpectedEdgeCount": 4,
         "Directed": false,
         "Adj": {
             "0": [
@@ -64,7 +63,7 @@
         }
     },
     "test_b": {
-        "Searches": {
+        "ExpectedSearches": {
             "0": [
                 0,
                 1,
@@ -103,8 +102,7 @@
         },
         "Name": "square with bisected diagonal",
         "NumVertices": 5,
-        "NumEdges": 6,
-        "EdgeCount": 6,
+        "ExpectedEdgeCount": 6,
         "Directed": false,
         "Adj": {
             "0": [
@@ -132,7 +130,7 @@
         }
     },
     "test_d": {
-        "Searches": {
+        "ExpectedSearches": {
             "0": [
                 0,
                 2,
@@ -184,8 +182,7 @@
         },
         "Name": "x wing",
         "NumVertices": 6,
-        "NumEdges": 8,
-        "EdgeCount": 8,
+        "ExpectedEdgeCount": 8,
         "Directed": false,
         "Adj": {
             "0": [
@@ -219,7 +216,7 @@
         }
     },
     "test_c": {
-        "Searches": {
+        "ExpectedSearches": {
             "0": [
                 0,
                 1,
@@ -271,8 +268,7 @@
         },
         "Name": "cat face",
         "NumVertices": 6,
-        "NumEdges": 8,
-        "EdgeCount": 8,
+        "ExpectedEdgeCount": 8,
         "Directed": false,
         "Adj": {
             "0": [
@@ -306,7 +302,7 @@
         }
     },
     "test_e": {
-        "Searches": {
+        "ExpectedSearches": {
             "0": [
                 0,
                 1,
@@ -325,8 +321,7 @@
         },
         "Name": "three cycle",
         "NumVertices": 3,
-        "NumEdges": 3,
-        "EdgeCount": 3,
+        "ExpectedEdgeCount": 3,
         "Directed": false,
         "Adj": {
             "0": [
@@ -344,7 +339,7 @@
         }
     },
     "test_f": {
-        "Searches": {
+        "ExpectedSearches": {
             "0": [
                 0,
                 1,
@@ -354,8 +349,7 @@
         },
         "Name": "four cycle",
         "NumVertices": 4,
-        "NumEdges": 4,
-        "EdgeCount": 4,
+        "ExpectedEdgeCount": 4,
         "Directed": false,
         "Adj": {
             "0": [
@@ -377,7 +371,7 @@
         }
     },
     "test_g": {
-        "Searches": {
+        "ExpectedSearches": {
             "0": [
                 0,
                 1,
@@ -388,8 +382,7 @@
         },
         "Name": "five cycle",
         "NumVertices": 5,
-        "NumEdges": 5,
-        "EdgeCount": 5,
+        "ExpectedEdgeCount": 5,
         "Directed": false,
         "Adj": {
             "0": [
@@ -415,7 +408,7 @@
         }
     },
     "test_h": {
-        "Searches": {
+        "ExpectedSearches": {
             "0": [
                 0,
                 1,
@@ -427,8 +420,7 @@
         },
         "Name": "six cycle",
         "NumVertices": 6,
-        "NumEdges": 6,
-        "EdgeCount": 6,
+        "ExpectedEdgeCount": 6,
         "Directed": false,
         "Adj": {
             "0": [
@@ -458,7 +450,7 @@
         }
     },
     "test_skiena_fig5.9": {
-        "Searches": {
+        "ExpectedSearches": {
             "0": [
                 0,
                 1,
@@ -470,8 +462,7 @@
         },
         "Name": "skiena fig 5.9",
         "NumVertices": 6,
-        "NumEdges": 7,
-        "EdgeCount": 7,
+        "ExpectedEdgeCount": 7,
         "Directed": false,
         "Adj": {
             "0": [

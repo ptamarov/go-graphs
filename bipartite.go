@@ -15,15 +15,15 @@ func (g *graph) FindTwoColoring() (map[int]int, error) {
 	var coloringError error
 	var currentColor int
 
-	discovered := make(map[int]bool, g.NumVertices)
-	coloring := make(map[int]int, g.NumVertices)
-	for i := 0; i < g.NumVertices; i++ {
+	discovered := make(map[int]bool, g.numVertices)
+	coloring := make(map[int]int, g.numVertices)
+	for i := 0; i < g.numVertices; i++ {
 		coloring[i] = uncolored
 	}
 	currentColor = white
 
 loop:
-	for i := 0; i < g.NumVertices; i++ {
+	for i := 0; i < g.numVertices; i++ {
 		if discovered[i] {
 			continue loop
 		}
@@ -36,8 +36,8 @@ loop:
 		for len(currentLayer) != 0 {
 			for _, parent := range currentLayer {
 				coloring[parent] = currentColor
-				for _, child := range g.Adj[parent] {
-					if discovered[child] || g.Directed {
+				for _, child := range g.adj[parent] {
+					if discovered[child] || g.directed {
 						coloringError = checkEdgeColoring(parent, child, coloring)
 						if coloringError != nil {
 							return nil, coloringError

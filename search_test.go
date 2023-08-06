@@ -6,17 +6,22 @@ import (
 )
 
 func TestBreadthFirstSearch(t *testing.T) {
-	tests := loadTestsFromJSON("testdata/bfs-tests.json", []string{"Searches"})
+	tests := loadTestsFromJSON("testdata/bfs-tests.json")
 
-	for _, test := range tests {
-		for source, searchResult := range test.Searches {
-			t.Run(fmt.Sprintf(test.Name+"/source=%d", source), func(t *testing.T) {
-				got := test.BreadthFirstSearchFrom(source)
+	for name, test := range tests {
+
+		g, err := NewGraph(test.NumVertices, test.Adj)
+		if err != nil {
+			t.Errorf("while generating graph: %s", err)
+		}
+
+		for source, searchResult := range test.ExpectedSearches {
+			t.Run(fmt.Sprintf(name+"/source=%d", source), func(t *testing.T) {
+				got := g.BreadthFirstSearchFrom(source)
 				want := searchResult
-
 				for i := range got {
 					if got[i] != want[i] {
-						t.Errorf("BFS [%s] from %d: expected to get node %d at position %d but got node %d instead", test.Name, source, want[i], i, got[i])
+						t.Errorf("BFS [%s] from %d: expected to get node %d at position %d but got node %d instead", name, source, want[i], i, got[i])
 					}
 				}
 			})
@@ -25,17 +30,17 @@ func TestBreadthFirstSearch(t *testing.T) {
 }
 
 func TestEdgeCount(t *testing.T) {
-	tests := loadTestsFromJSON("testdata/bfs-tests.json", []string{"EdgeCount"})
+	tests := loadTestsFromJSON("testdata/bfs-tests.json")
 
-	for _, test := range tests {
-		err := test.validate()
+	for name, test := range tests {
+		g, err := NewGraph(test.NumVertices, test.Adj)
 		if err != nil {
-			t.Errorf("invalid input [%s]", test.Name)
+			t.Errorf("while generating graph: %s", err)
 		}
-		got := test.EdgeNumber()
-		want := test.EdgeCount
+
+		got, want := g.EdgeNumber(), test.ExpectedEdgeCount
 		if got != want {
-			t.Errorf("Wanted %d edges but got %d for %s", want, got, test.Name)
+			t.Errorf("Wanted %d edges but got %d for %s", want, got, name)
 		}
 	}
 }

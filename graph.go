@@ -1,16 +1,15 @@
 package graph
 
 type graph struct {
-	NumVertices int `json:"NumVertices"`
+	numVertices int
 	numEdges    int
-	Adj         map[int][]int `json:"Adj"`
-	Directed    bool          `json:"Directed"`
-	Name        string        `json:"Name"`
+	adj         map[int][]int
+	directed    bool
 	components  [][]int
 }
 
-func NewGraph(NumVertices int, Adj map[int][]int, Name string) (graph, error) {
-	g := graph{NumVertices: NumVertices, Adj: Adj, Directed: false, Name: Name}
+func NewGraph(NumVertices int, Adj map[int][]int) (graph, error) {
+	g := graph{numVertices: NumVertices, adj: Adj, directed: false}
 	err := g.validate()
 	if err != nil {
 		var z graph
@@ -19,8 +18,8 @@ func NewGraph(NumVertices int, Adj map[int][]int, Name string) (graph, error) {
 	return g, nil
 }
 
-func NewDirGraph(NumVertices int, Adj map[int][]int, Name string) (graph, error) {
-	g := graph{NumVertices: NumVertices, Adj: Adj, Directed: true, Name: Name}
+func NewDirGraph(NumVertices int, Adj map[int][]int) (graph, error) {
+	g := graph{numVertices: NumVertices, adj: Adj, directed: true}
 	err := g.validate()
 	if err != nil {
 		var z graph

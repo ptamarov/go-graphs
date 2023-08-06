@@ -19,13 +19,13 @@ func popFrom(slice []int, fifo bool) (int, []int) {
 }
 
 func (g *graph) searchFrom(source int, fifo bool) []int {
-	if source < 0 || source > g.NumVertices {
-		panic(fmt.Sprintf("source vertex %d out of range %d", source, g.NumVertices))
+	if source < 0 || source > g.numVertices {
+		panic(fmt.Sprintf("source vertex %d out of range %d", source, g.numVertices))
 	}
 
 	result := []int{}
-	discovered := make(map[int]bool, g.NumVertices)
-	processed := make(map[int]bool, g.NumVertices)
+	discovered := make(map[int]bool, g.numVertices)
+	processed := make(map[int]bool, g.numVertices)
 	discovered[source] = true
 	array := []int{source}
 
@@ -34,7 +34,7 @@ func (g *graph) searchFrom(source int, fifo bool) []int {
 	for len(array) != 0 {
 		current, array = popFrom(array, fifo)
 
-		for _, child := range g.Adj[current] {
+		for _, child := range g.adj[current] {
 			if !discovered[child] {
 				array = append(array, child)
 				discovered[child] = true // a node is discovered when its the first time it appears in bfs

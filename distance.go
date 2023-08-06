@@ -4,15 +4,15 @@ import "fmt"
 
 // MinimalPathsTreeFrom returns a map which sends a node to its parent in a minimal distance tree with root at the source node.
 func (g *graph) parent_and_level_from(source int) (map[int]int, map[int]int) {
-	if source > g.NumVertices {
-		panic(fmt.Sprintf("source vertex %d out of range %d", source, g.NumVertices))
+	if source > g.numVertices {
+		panic(fmt.Sprintf("source vertex %d out of range %d", source, g.numVertices))
 	}
 
-	level := make(map[int]int, g.NumVertices)
-	parent := make(map[int]int, g.NumVertices)
-	discovered := make(map[int]bool, g.NumVertices)
+	level := make(map[int]int, g.numVertices)
+	parent := make(map[int]int, g.numVertices)
+	discovered := make(map[int]bool, g.numVertices)
 
-	for i := 0; i < g.NumVertices; i++ {
+	for i := 0; i < g.numVertices; i++ {
 		parent[i] = -1 // -1 -> unreachable
 	}
 
@@ -25,7 +25,7 @@ func (g *graph) parent_and_level_from(source int) (map[int]int, map[int]int) {
 		for _, node := range currentLayer {
 			discovered[node] = true
 			level[node] = currentLevel
-			for _, next := range g.Adj[node] {
+			for _, next := range g.adj[node] {
 				if !discovered[next] {
 					nextLayer = append(nextLayer, next)
 					discovered[next] = true
