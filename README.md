@@ -8,7 +8,6 @@ A graph object is defined by specifying:
 
 1. a number of vertices `NumVertices`,
 2. a map `Adj` assigning each integer in `[0,n)` to its array of neighbours,
-3. optionally, a name `Name`.
 
 ## Initialization
 
@@ -17,8 +16,8 @@ returns an undirected graph or an error if the input data is invalid. The corres
 built-in method `NewDirGraph` returns a directed graph.
 
 ```go
-func NewGraph(NumVertices int, Adj map[int][]int, Name string) (graph, error)
-func NewDirGraph(NumVertices int, Adj map[int][]int, Name string) (graph, error)
+func NewGraph(NumVertices int, Adj map[int][]int) (graph, error)
+func NewDirGraph(NumVertices int, Adj map[int][]int) (graph, error)
 ```
 
 A graph can also be created from a JSON file, using the in-built method `NewGraphFromJSON`.
@@ -32,7 +31,6 @@ are required, although of course the `Name` field can be safely set to be the em
 
 ```json
 {
-    "Name": "four star",
     "NumVertices": 5,
     "Directed": false,
     "Adj": {
