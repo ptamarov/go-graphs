@@ -31,7 +31,7 @@ func TestBreadthFirstSearch(t *testing.T) {
 }
 
 func TestEdgeCount(t *testing.T) {
-	tests := loadTestsFromJSON("db/bfs-tests.json", []string{"EdgeCount"})
+	tests := loadTestsFromJSON("testdata/bfs-tests.json", []string{"EdgeCount"})
 
 	// if len(errors) != 0 {
 	// 	t.Error(manyErrors{errors})
