@@ -11,13 +11,12 @@ func TestExample(t *testing.T) {
 	var g graph.Graph
 	var err error
 
-	g, err = graph.NewGraph(1, map[int][]int{1: {}})
+	g, err = graph.NewGraph(5, map[int][]int{0: {1, 2, 3, 4}, 1: {0, 2}, 2: {0, 1}, 3: {0, 4}, 4: {0, 3}})
 
 	if err != nil {
 		t.Error(err)
 	}
 
-	result := g.BreadthFirstSearchFrom(0)
-
-	fmt.Println(result)
+	search := g.BreadthFirstSearchFrom(1)
+	fmt.Println(search)
 }
