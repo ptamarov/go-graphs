@@ -9,7 +9,7 @@ import "fmt"
 //   - Check that no node is out of bounds in the values of the arrays in the adj. list.
 //   - Check that no node is its own neighbour.
 //   - Check that no node has repeated neighbours.
-func (g *graph) validate() error {
+func (g *Graph) validate() error {
 
 	if g.numVertices == 0 {
 		return fmt.Errorf("graph cannot have no vertices")

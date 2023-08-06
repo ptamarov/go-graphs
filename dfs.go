@@ -1,6 +1,6 @@
 package graph
 
-func (gr *graph) depthFirstSearchFromWithSubroutines(v int) {
+func (gr *Graph) depthFirstSearchFromWithSubroutines(v int) {
 	var (
 		time     int
 		finished bool

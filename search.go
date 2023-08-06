@@ -18,7 +18,7 @@ func popFrom(slice []int, fifo bool) (int, []int) {
 	return out, slice
 }
 
-func (g *graph) searchFrom(source int, fifo bool) []int {
+func (g *Graph) searchFrom(source int, fifo bool) []int {
 	if source < 0 || source > g.numVertices {
 		panic(fmt.Sprintf("source vertex %d out of range %d", source, g.numVertices))
 	}

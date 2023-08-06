@@ -8,8 +8,10 @@ import (
 )
 
 func TestExample(t *testing.T) {
+	var g graph.Graph
+	var err error
 
-	g, err := graph.NewGraph(1, map[int][]int{1: {}})
+	g, err = graph.NewGraph(1, map[int][]int{1: {}})
 
 	if err != nil {
 		t.Error(err)

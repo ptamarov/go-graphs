@@ -1,7 +1,7 @@
 package graph
 
 // ConnectedComponents returns a list of list with the connected components of the graph
-func (g *graph) updateConnectedComponents(countEdges bool) {
+func (g *Graph) updateConnectedComponents(countEdges bool) {
 	discovered := make(map[int]bool, g.numVertices)
 	processed := make(map[int]bool, g.numVertices)
 	components := [][]int{}

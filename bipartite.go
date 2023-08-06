@@ -11,7 +11,7 @@ const (
 // FindTwoColoring attempts to find a two coloring of the graph. Returns a coloring in the form
 // of a dictionary and nil if a two coloring exists, or a nil map and an error reporting a problematic
 // edge if the two coloring could not be found.
-func (g *graph) FindTwoColoring() (map[int]int, error) {
+func (g *Graph) FindTwoColoring() (map[int]int, error) {
 	var coloringError error
 	var currentColor int
 

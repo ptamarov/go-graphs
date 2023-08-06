@@ -40,7 +40,7 @@ func loadTestsFromJSON(filepath string) map[string]testCase {
 	return testCaseByName
 }
 
-func NewGraphFromJSON(filepath string) (graph, error) {
+func NewGraphFromJSON(filepath string) (Graph, error) {
 	filein, err := os.Open(filepath)
 	if err != nil {
 		log.Fatal(err)
@@ -58,7 +58,7 @@ func NewGraphFromJSON(filepath string) (graph, error) {
 		log.Fatal(err)
 	}
 
-	var g graph
+	var g Graph
 	if t.Directed {
 		g, err = NewGraph(t.NumVertices, t.Adj)
 	} else {
@@ -67,7 +67,7 @@ func NewGraphFromJSON(filepath string) (graph, error) {
 	}
 
 	if err != nil {
-		return graph{}, fmt.Errorf("while creating graph: %s", err)
+		return Graph{}, fmt.Errorf("while creating graph: %s", err)
 	}
 
 	return g, nil
