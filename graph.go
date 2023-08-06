@@ -63,7 +63,7 @@ func (g *Graph) DepthFirstSearchFrom(source int) []int {
 // ConnectedComponents counts the number of connected components of the graph.
 func (g *Graph) ConnectedComponents() [][]int {
 	if len(g.components) == 0 {
-		g.updateConnectedComponents(false)
+		g.updateConnectedComponents()
 	}
 	return g.components
 }
