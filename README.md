@@ -6,7 +6,7 @@ This a Go package to work with simple (un)directed graphs.
 
 A graph object is defined by specifying
 
-1. a number of vertices `NumVertices`,
+1. a number of vertices `n`,
 2. a map `Adj` assigning each integer in `[0,n)` to its array of neighbours.
 
 A graph can be constructed with any of the following functions:
@@ -68,7 +68,8 @@ of the first example:
 
 ## Methods 
 
-The package support standard graph traversal algorithms to search through the graph.
+The package supports standard graph-traversal-based algorithms to query
+and analyse simple (un)directed graphs.
 
 #### func `BreadthFirstSearchFrom`
 ```go
@@ -126,5 +127,5 @@ the parent parent `-1`; source is also assigned the parent `-1`.
 func (g *Graph).ShortestPathsFrom(source int) map[int][]int
 ```
 `ShortestPathsFrom` returns a map sending a node to a shortest
-path to the source node. An empty path indicated that the node
+path to the source node. An empty path indicates that the node
 is unreachable from the source node.
