@@ -21,7 +21,7 @@ func (g *Graph) newCachedInput() cachedInput {
 	return ci
 }
 
-func (g *Graph) CachedDepthFirstSearchFrom(v int, ci cachedInput) cachedInput {
+func (g *Graph) cachedDepthFirstSearchFrom(v int, ci cachedInput) cachedInput {
 	ci.discovered[v] = true
 	ci.entryTime[v] = ci.timeCounter
 	ci.timeCounter++
@@ -30,7 +30,7 @@ func (g *Graph) CachedDepthFirstSearchFrom(v int, ci cachedInput) cachedInput {
 	for _, new := range g.adj[v] {
 		if !ci.discovered[new] {
 			ci.parent[new] = v
-			ci = g.CachedDepthFirstSearchFrom(new, ci)
+			ci = g.cachedDepthFirstSearchFrom(new, ci)
 		}
 	}
 

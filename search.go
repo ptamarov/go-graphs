@@ -38,6 +38,6 @@ func (g *Graph) BreadthFirstSearchFrom(source int) []int {
 // DepthFirstSearchFrom performs a DepthFirstSearchFrom in the graph starting from the input source node.
 func (g *Graph) DepthFirstSearchFrom(source int) []int {
 	ci := g.newCachedInput()
-	ci = g.CachedDepthFirstSearchFrom(source, ci)
+	ci = g.cachedDepthFirstSearchFrom(source, ci)
 	return ci.searchResult
 }
