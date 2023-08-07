@@ -63,6 +63,11 @@ func (g *Graph) NumberOfEdges() int {
 	return g.numEdges
 }
 
+// Degree returns the degree of a node.
+func (g *Graph) Degree(node int) int {
+	return len(g.adj[node])
+}
+
 // DistanceFrom returns a map recording the distance of each node in the graph to the source node.
 func (g *Graph) DistanceFrom(source int) map[int]int {
 	_, level := g.parent_and_level_from(source)
