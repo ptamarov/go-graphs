@@ -9,7 +9,6 @@ func TestBreadthFirstSearch(t *testing.T) {
 	tests := loadTestsFromJSON("testdata/bfs-tests.json")
 
 	for name, test := range tests {
-
 		g, err := NewGraph(test.NumVertices, test.Adj)
 		if err != nil {
 			t.Errorf("while generating graph: %s", err)
@@ -28,11 +27,11 @@ func TestBreadthFirstSearch(t *testing.T) {
 		}
 	}
 }
+
 func TestDepthFirstSearch(t *testing.T) {
 	tests := loadTestsFromJSON("testdata/dfs-tests.json")
 
 	for name, test := range tests {
-
 		g, err := NewGraph(test.NumVertices, test.Adj)
 		if err != nil {
 			t.Errorf("while generating graph: %s", err)
@@ -57,14 +56,15 @@ func TestEdgeCount(t *testing.T) {
 	tests := loadTestsFromJSON("testdata/bfs-tests.json")
 
 	for name, test := range tests {
-		g, err := NewGraph(test.NumVertices, test.Adj)
-		if err != nil {
-			t.Errorf("while generating graph: %s", err)
-		}
-
-		got, want := g.NumberOfEdges(), test.ExpectedEdgeCount
-		if got != want {
-			t.Errorf("Wanted %d edges but got %d for %s", want, got, name)
-		}
+		t.Run(name, func(t *testing.T) {
+			g, err := NewGraph(test.NumVertices, test.Adj)
+			if err != nil {
+				t.Errorf("while generating graph: %s", err)
+			}
+			got, want := g.NumberOfEdges(), test.ExpectedEdgeCount
+			if got != want {
+				t.Errorf("Wanted %d edges but got %d for %s", want, got, name)
+			}
+		})
 	}
 }
