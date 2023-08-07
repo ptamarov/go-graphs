@@ -28,4 +28,5 @@ func TestExample(t *testing.T) {
 
 	search = g.BreadthFirstSearchFrom(1)
 	fmt.Println(search)
+
 }
