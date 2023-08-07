@@ -25,7 +25,6 @@ func (g *Graph) searchFrom(source int, fifo bool) []int {
 
 	result := []int{}
 	discovered := make(map[int]bool, g.numVertices)
-	processed := make(map[int]bool, g.numVertices)
 	discovered[source] = true
 	array := []int{source}
 
@@ -33,18 +32,28 @@ func (g *Graph) searchFrom(source int, fifo bool) []int {
 
 	for len(array) != 0 {
 		current, array = popFrom(array, fifo)
+		result = append(result, current)
 
+		var temp []int
 		for _, child := range g.adj[current] {
 			if !discovered[child] {
-				array = append(array, child)
-				discovered[child] = true // a node is discovered when its the first time it appears in bfs
+				temp = append(temp, child)
+				discovered[child] = true
 			}
 		}
-
-		result = append(result, current)
-		processed[current] = true // a node is processed once all its children have been discovered
-
+		if fifo {
+			array = append(array, temp...)
+		} else {
+			array = append(array, reverse(temp)...)
+		}
 	}
 
 	return result
+}
+
+func reverse(s []int) []int {
+	for i, j := 0, len(s)-1; i < j; i, j = i+1, j-1 {
+		s[i], s[j] = s[j], s[i]
+	}
+	return s
 }
