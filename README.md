@@ -71,6 +71,18 @@ of the first example:
 The package supports standard graph-traversal-based algorithms to query
 and analyse simple (un)directed graphs.
 
+#### func `Degreee`
+```go
+func (g *Graph) Degree(node int) int
+```
+`Degreee` returns the degree of a node. If the graph is oriented, it returns the outdegree.
+
+#### func `NumberOfEdges`
+```go
+func (g *Graph) NumberOfEdges() int
+```
+`NumberOfEdges` returns the number of edges of the graph.
+
 #### func `BreadthFirstSearchFrom`
 ```go
 func (g *graph) BreadthFirstSearchFrom(source int) []int
@@ -80,43 +92,44 @@ and returns the discovered vertices in the resulting traversal order.
 
 #### func `DepthFirstSearchFrom`
 ```go
-func (g *Graph).DepthFirstSearchFrom(source int) []int
+func (g *Graph) DepthFirstSearchFrom(source int) []int
 ```
 `DepthFirstSearchFrom` performs a depth first search from the source vertex and 
 returns the discovered vertices in the resulting traversal order.  
 
 #### func `ConnectedComponents`
 ```go
-func (g *Graph).ConnectedComponents() [][]int
+func (g *Graph) ConnectedComponents() [][]int
 ```
 `ConnectedComponents` returns an array of arrays, where each individual array 
 corresponds to a single connected component of the graph.
 
-#### func `DistanceFrom`
+#### func `ConnectedComponentOf`
 ```go
-func (*Graph).DistanceFrom(source int) map[int]int
+func (g *Graph) ConnectedComponentOf(source int) [][]int
 ```
-`DistanceFrom` returns a map that assigns each vertex of the graph to the
-shortest distance to the source vertex. A value of `-1` reports the vertex is
-unreachable from source. 
-
-#### func `NumberOfEdges`
-```go
-func (g *Graph).NumberOfEdges() int
-```
-`NumberOfEdges` returns the number of edges of the graph.
+`ConnectedComponentOf` returns an array containig all nodes in the connected
+component of the source node.
 
 #### func `FindTwoColoring`
 ```go
-func (g *Graph).FindTwoColoring() (map[int]int, error)
+func (g *Graph) FindTwoColoring() (map[int]int, error)
 ```
 `FindTwoColoring` attempts to find a two coloring of the graph. It returns
 a map assigning each node to `0` or `1` if successful and no error, or an 
 empty map and an error reporting a problematic edge if the attempt fails.
 
+#### func `DistanceFrom`
+```go
+func (*Graph) DistanceFrom(source int) map[int]int
+```
+`DistanceFrom` returns a map that assigns each vertex of the graph to the
+shortest distance to the source vertex. A value of `-1` reports the vertex is
+unreachable from source. 
+
 #### func `ShortestDistanceTreeFrom`
 ```go
-func (g *Graph).ShortestDistanceTreeFrom(source int) map[int]int
+func (g *Graph) ShortestDistanceTreeFrom(source int) map[int]int
 ```
 `ShortestDistanceTreeFrom` returns a map assigning a vertex to its parent
 in a shortest distance tree to the source. Any unreachable vertex is assigned
@@ -124,8 +137,45 @@ the parent parent `-1`; source is also assigned the parent `-1`.
 
 #### func `ShortestPathsFrom`
 ```go
-func (g *Graph).ShortestPathsFrom(source int) map[int][]int
+func (g *Graph) ShortestPathsFrom(source int) map[int][]int
 ```
 `ShortestPathsFrom` returns a map sending a node to a shortest
 path to the source node. An empty path indicates that the node
 is unreachable from the source node.
+
+#### func `RandomGraph`
+```go
+func RandomGraph(r *rand.Rand, n int, m int) (Graph, error) 
+```
+
+`RandomGraph` generates a random graph with `n` vertices and `m` edges in
+in the [Erdős–Rényi model](https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93R%C3%A9nyi_model).
+
+_Example_. There are exactly 3 labelled graphs with 3 vertices and 2 edges, and each is uniquely
+determined by a unique vertex of degree two. The following generates 10000 random graphs with 
+3 vertices and 2 edges and prints the number of ocurrences of each. 
+
+```go
+package main 
+
+import (
+    "fmt"
+
+    graph "github.com/ptamarov/go-graphs"
+)
+
+func main() {
+    r := rand.New(rand.NewSource(time.Now().Unix()))
+    
+    results := make(map[int]int, 3)
+    for i := 0; i < 10000; i++ {
+        g, _ := graph.RandomGraph(r, 3, 2)
+        for i := 0; i < 3; i++ {
+            results[i] += g.Degree(i) - 1
+        }
+    }
+
+    fmt.Println(results)
+    // Output: map[0:3300 1:3355 2:3345]
+}
+```
