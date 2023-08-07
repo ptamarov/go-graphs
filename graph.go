@@ -50,16 +50,6 @@ func NewDirGraph(NumVertices int, Adj map[int][]int) (Graph, error) {
 	return g, nil
 }
 
-// BreadthFirstSearch performs a BreadthFirstSearch in the graph starting from the input source node.
-func (g *Graph) BreadthFirstSearchFrom(source int) []int {
-	return g.searchFrom(source, true)
-}
-
-// DepthFirstSearchFrom performs a DepthFirstSearchFrom in the graph starting from the input source node.
-func (g *Graph) DepthFirstSearchFrom(source int) []int {
-	return g.searchFrom(source, false)
-}
-
 // ConnectedComponents counts the number of connected components of the graph.
 func (g *Graph) ConnectedComponents() [][]int {
 	if len(g.components) == 0 {

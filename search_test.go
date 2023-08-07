@@ -44,7 +44,8 @@ func TestDepthFirstSearch(t *testing.T) {
 				want := searchResult
 				for i := range got {
 					if got[i] != want[i] {
-						t.Errorf("DFS [%s] from %d: expected %d at position %d but got %d instead", name, source, want[i], i, got[i])
+						// t.Errorf("DFS [%s] from %d: expected %d at position %d but got %d instead", name, source, want[i], i, got[i])
+						t.Errorf("expected %v, got %v", want, got)
 					}
 				}
 			})

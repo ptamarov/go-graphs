@@ -9,12 +9,14 @@ import (
 )
 
 type testCase struct {
-	Adj               map[int][]int `json:"Adj"`
-	NumVertices       int           `json:"NumVertices"`
-	Directed          bool          `json:"Directed"`
-	ExpectedBipartite bool          `json:"ExpectedBipartite"`
-	ExpectedSearches  map[int][]int `json:"ExpectedSearches"`
-	ExpectedEdgeCount int           `json:"ExpectedEdgecount"`
+	Adj                  map[int][]int `json:"Adj"`
+	NumVertices          int           `json:"NumVertices"`
+	Directed             bool          `json:"Directed"`
+	ExpectedBipartite    bool          `json:"ExpectedBipartite"`
+	ExpectedSearches     map[int][]int `json:"ExpectedSearches"`
+	ExpectedEdgeCount    int           `json:"ExpectedEdgecount"`
+	ExpectedMatchingSize int           `json:"ExpectedMatchingSize"`
+	ExpectedCycle        bool          `json:"ExpectedCycle"`
 	// add more expected results for other tests
 }
 
