@@ -6,7 +6,7 @@ This a Go package to work with simple (un)directed graphs.
 
 A graph object is defined by specifying
 
-1. a number of vertices `n`,
+1. a number of nodes `n`,
 2. a map `Adj` assigning each integer in `[0,n)` to its array of neighbours.
 
 A graph can be constructed with any of the following functions:
@@ -45,17 +45,16 @@ The documentation is available at [pkg.go.dev](https://pkg.go.dev/github.com/pta
 
 ## Methods 
 
-The package supports standard graph-traversal-based algorithms to query
-and analyse simple (un)directed graphs.
+The package supports standard graph-traversal-based algorithms to query and analyse simple (un)directed graphs.
 
 #### func `BreadthFirstSearchFrom`
 ```go
-func (g *graph) BreadthFirstSearchFrom(source int, processVertex func(int), processVertexLate func(int), processEdge func(int, int))
+func (g *graph) BreadthFirstSearchFrom(source int, processNode func(int), processNodeLate func(int), processEdge func(int, int) error) error
 ```
-`BreadthFirstSearchFrom` performs a breadth first search from the source vertex and processes vertices and edges as instructed by the
-input functions. The vertices are processed in the traversal order, and are _processed late_ once all of its neighbours have been
-discovered in the search. Edges are processed as they appear from a new discovered vertex to a vertex that has not yet been 
-processed. 
+`BreadthFirstSearchFrom` performs a breadth first search from the source node and processes nodes and edges as instructed by the
+input functions. The nodes are processed in the traversal order, and are _processed late_ once all of its neighbours have been
+discovered in the search. Edges are processed as they appear from a new discovered node to a node that has not yet been 
+processed. If the edge processing function returns an error, it will stop the search and return the error encountered.
 
 _Example_: the following performs a standard breadth first search and counts the number of edges of the initialized graph.
 
@@ -64,7 +63,7 @@ _Example_: the following performs a standard breadth first search and counts the
 	var err error
 	var searchResult []int
 
-	// add vertex to result when discovered
+	// add node to result when discovered
 	appendToSearchResult := func(v int) {
 		searchResult = append(searchResult, v)
 	}
@@ -75,15 +74,15 @@ _Example_: the following performs a standard breadth first search and counts the
 		edgeCount++
 	}
 
-	// do no late vertex processing 
-	processVertexLate := func(_ int) {}
+	// do no late node processing 
+	processNodeLate := func(_ int) {}
 
 	// initialize graph and perform breadth first search
 	g, err = graph.New(5, map[int][]int{0: {1, 2, 3, 4}, 1: {0, 2}, 2: {0, 1}, 3: {0, 4}, 4: {0, 3}})
 	if err != nil {
 		t.Error(err)
 	}
-	g.BreadthFirstSearchFrom(1, appendToSearchResult, processVertexLate, increaseEdgeCounter)
+	g.BreadthFirstSearchFrom(1, appendToSearchResult, processNodeLate, increaseEdgeCounter)
 	fmt.Println(searchResult) // [1 0 2 3 4]
 	fmt.Println(edgeCount) // 6
 ```
@@ -92,8 +91,8 @@ _Example_: the following performs a standard breadth first search and counts the
 ```go
 func (g *Graph) DepthFirstSearchFrom(source int) []int
 ```
-`DepthFirstSearchFrom` performs a depth first search from the source vertex and 
-returns the discovered vertices in the resulting traversal order.  
+`DepthFirstSearchFrom` performs a depth first search from the source node and 
+returns the discovered nodes in the resulting traversal order.  
 
 #### func `ConnectedComponents`
 ```go
@@ -121,16 +120,16 @@ empty map and an error reporting a problematic edge if the attempt fails.
 ```go
 func (*Graph) DistanceFrom(source int) map[int]int
 ```
-`DistanceFrom` returns a map that assigns each vertex of the graph to the
-shortest distance to the source vertex. A value of `-1` reports the vertex is
+`DistanceFrom` returns a map that assigns each node of the graph to the
+shortest distance to the source node. A value of `-1` reports the node is
 unreachable from source. 
 
 #### func `ShortestDistanceTreeFrom`
 ```go
 func (g *Graph) ShortestDistanceTreeFrom(source int) map[int]int
 ```
-`ShortestDistanceTreeFrom` returns a map assigning a vertex to its parent
-in a shortest distance tree to the source. Any unreachable vertex is assigned
+`ShortestDistanceTreeFrom` returns a map assigning a node to its parent
+in a shortest distance tree to the source. Any unreachable node is assigned
 the parent parent `-1`; source is also assigned the parent `-1`.
 
 #### func `ShortestPathsFrom`
@@ -146,12 +145,12 @@ is unreachable from the source node.
 func NewRandom(r *rand.Rand, n int, m int) (Graph, error) 
 ```
 
-`NewRandom` generates a random graph with `n` vertices and `m` edges in
+`NewRandom` generates a random graph with `n` nodes and `m` edges in
 in the [Erdős–Rényi model](https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93R%C3%A9nyi_model).
 
-_Example_. There are exactly 3 labelled graphs with 3 vertices and 2 edges, and each is uniquely
-determined by a unique vertex of degree two. The following generates 10000 random graphs with 
-3 vertices and 2 edges and prints the number of ocurrences of each. 
+_Example_. There are exactly 3 labelled graphs with 3 nodes and 2 edges, and each is uniquely
+determined by a unique node of degree two. The following generates 10000 random graphs with 
+3 nodes and 2 edges and prints the number of ocurrences of each. 
 
 ```go
 package main 
