@@ -13,7 +13,7 @@ func TestFindTwColoring(t *testing.T) {
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			g, err := NewGraph(test.NumVertices, test.Adj)
+			g, err := New(test.NumVertices, test.Adj)
 			if err != nil {
 				t.Errorf("invalid input [%s]", name)
 			}
@@ -22,7 +22,7 @@ func TestFindTwColoring(t *testing.T) {
 			gotErr := (err == nil)
 			wantErr := test.ExpectedBipartite
 			if wantErr != gotErr {
-				t.Errorf("Got %s but was expecting %t", err, test.ExpectedBipartite)
+				t.Errorf("got %s but was expecting %t", err, test.ExpectedBipartite)
 			}
 		})
 	}

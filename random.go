@@ -10,9 +10,9 @@ type edge struct {
 	t int
 }
 
-// RandomGraph generates a random graph among those graphs with n vertices and m edges in the Erdős–Rényi model.
+// NewRandom generates a random graph among those graphs with n vertices and m edges in the Erdős–Rényi model.
 // In this model each graph with n vertices and m edge is equiprobable.
-func RandomGraph(r *rand.Rand, n int, m int) (Graph, error) {
+func NewRandom(r *rand.Rand, n int, m int) (Graph, error) {
 
 	if 2*m > n*(n-1) {
 		panic(fmt.Sprintf("too many edges (%d) for a graph with %d nodes", m, n))
@@ -44,7 +44,7 @@ func RandomGraph(r *rand.Rand, n int, m int) (Graph, error) {
 		Adj[t] = append(Adj[t], s)
 	}
 
-	g, err := NewGraph(n, Adj)
+	g, err := New(n, Adj)
 
 	if err != nil {
 		return Graph{}, err

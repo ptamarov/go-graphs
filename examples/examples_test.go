@@ -14,7 +14,7 @@ func TestExample(t *testing.T) {
 	var err error
 
 	// BFS in an undirected graph
-	g, err = graph.NewGraph(5, map[int][]int{0: {1, 2, 3, 4}, 1: {0, 2}, 2: {0, 1}, 3: {0, 4}, 4: {0, 3}})
+	g, err = graph.New(5, map[int][]int{0: {1, 2, 3, 4}, 1: {0, 2}, 2: {0, 1}, 3: {0, 4}, 4: {0, 3}})
 
 	if err != nil {
 		t.Error(err)
@@ -24,7 +24,7 @@ func TestExample(t *testing.T) {
 	fmt.Println(search)
 
 	// BFS in a directed graph
-	g, err = graph.NewDirGraph(5, map[int][]int{0: {2, 4}, 1: {0}, 2: {1}, 3: {0}, 4: {3}})
+	g, err = graph.NewDirected(5, map[int][]int{0: {2, 4}, 1: {0}, 2: {1}, 3: {0}, 4: {3}})
 
 	if err != nil {
 		t.Error(err)
@@ -38,7 +38,7 @@ func TestExample(t *testing.T) {
 	results := make(map[int]int, 3)
 
 	for i := 0; i < 10000; i++ {
-		g, err := graph.RandomGraph(r, 3, 2)
+		g, err := graph.NewRandom(r, 3, 2)
 		if err != nil {
 			t.Error(err)
 		}

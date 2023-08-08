@@ -11,14 +11,14 @@ A graph object is defined by specifying
 
 A graph can be constructed with any of the following functions:
 
-### func `NewGraph`
+### func `New`
 ```go
-func NewGraph(NumVertices int, Adj map[int][]int) (graph, error)
+func New(NumVertices int, Adj map[int][]int) (graph, error)
 ```
-`NewGraph` creates a new undirected graph or returns an error if the
+`New` creates a new undirected graph or returns an error if the
 input data is invalid. 
 
-_Example (NewGraph)_. The following example creates a "butterfly" graph with five vertices
+_Example (New)_. The following example creates a "butterfly" graph with five vertices
 and performs a breadth first search starting from vertex `1`.
 ```go
 package main 
@@ -30,27 +30,21 @@ import (
 )
 
 func main() {
-	g, _ := graph.NewGraph(5, map[int][]int{0: {1, 2, 3, 4}, 1: {0, 2}, 2: {0, 1}, 3: {0, 4}, 4: {0, 3}})
+	g, _ := graph.New(5, map[int][]int{0: {1, 2, 3, 4}, 1: {0, 2}, 2: {0, 1}, 3: {0, 4}, 4: {0, 3}})
     search := g.BreadthFirstSearchFrom(1)
     fmt.Println(search)
     // Output: [1 0 2 3 4]
 }
 ```
 
-### func `NewDirGraph`
-```go 
-func NewDirGraph(NumVertices int, Adj map[int][]int) (graph, error)
-```
-`NewDirGraph` returns a directed graph.
-
-### func `NewGraphFromJSON`
+### func `NewFromJSON`
 ```go
-func NewGraphFromJSON(filepath string) (graph, error) 
+func NewFromJSON(filepath string) (graph, error) 
 ```
-`NewGraphFromJSON` creates a graph from a JSON file or returns an error if the
+`NewFromJSON` creates a graph from a JSON file or returns an error if the
 input data is invalid.
 
-_Example (NewGraphFromJSON)_. The following example shows a valid JSON format to initalize the butterfly graph
+_Example (NewFromJSON)_. The following example shows a valid JSON format to initalize the butterfly graph
 of the first example:
 ```json
 {
@@ -66,22 +60,14 @@ of the first example:
 }
 ```
 
+## Documentation 
+
+The documentation is available at [pkg.go.dev](https://pkg.go.dev/github.com/ptamarov/go-graphs).
+
 ## Methods 
 
 The package supports standard graph-traversal-based algorithms to query
 and analyse simple (un)directed graphs.
-
-#### func `Degreee`
-```go
-func (g *Graph) Degree(node int) int
-```
-`Degreee` returns the degree of a node. If the graph is oriented, it returns the outdegree.
-
-#### func `NumberOfEdges`
-```go
-func (g *Graph) NumberOfEdges() int
-```
-`NumberOfEdges` returns the number of edges of the graph.
 
 #### func `BreadthFirstSearchFrom`
 ```go
@@ -143,12 +129,12 @@ func (g *Graph) ShortestPathsFrom(source int) map[int][]int
 path to the source node. An empty path indicates that the node
 is unreachable from the source node.
 
-#### func `RandomGraph`
+#### func `NewRandom`
 ```go
-func RandomGraph(r *rand.Rand, n int, m int) (Graph, error) 
+func NewRandom(r *rand.Rand, n int, m int) (Graph, error) 
 ```
 
-`RandomGraph` generates a random graph with `n` vertices and `m` edges in
+`NewRandom` generates a random graph with `n` vertices and `m` edges in
 in the [Erdős–Rényi model](https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93R%C3%A9nyi_model).
 
 _Example_. There are exactly 3 labelled graphs with 3 vertices and 2 edges, and each is uniquely

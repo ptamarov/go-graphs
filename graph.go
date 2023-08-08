@@ -8,9 +8,9 @@ type Graph struct {
 	components  [][]int
 }
 
-// NewGraph creates a new undirected graph or returns an error if the
+// New creates a new undirected graph or returns an error if the
 // input data is invalid.
-func NewGraph(NumVertices int, Adj map[int][]int) (Graph, error) {
+func New(NumVertices int, Adj map[int][]int) (Graph, error) {
 	g := Graph{numVertices: NumVertices, adj: Adj, directed: false}
 	err := g.validate()
 	if err != nil {
@@ -30,9 +30,9 @@ func NewGraph(NumVertices int, Adj map[int][]int) (Graph, error) {
 	return g, nil
 }
 
-// NewDirGraph creates a new directed graph or returns an error if the
+// NewDirected creates a new directed graph or returns an error if the
 // input data is invalid.
-func NewDirGraph(NumVertices int, Adj map[int][]int) (Graph, error) {
+func NewDirected(NumVertices int, Adj map[int][]int) (Graph, error) {
 	g := Graph{numVertices: NumVertices, adj: Adj, directed: true}
 	err := g.validate()
 	if err != nil {
@@ -62,8 +62,13 @@ func (g *Graph) ConnectedComponents() [][]int {
 	return g.components
 }
 
-// NumberOfEdges counts the number of edges in the graph by running iterated BFSs.
-func (g *Graph) NumberOfEdges() int {
+// Order returns the number of vertices in the graph.
+func (g *Graph) Order() int {
+	return g.numVertices
+}
+
+// Size returns the number of edges in the graph.
+func (g *Graph) Size() int {
 	return g.numEdges
 }
 
