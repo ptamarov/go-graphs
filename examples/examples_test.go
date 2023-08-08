@@ -35,7 +35,7 @@ func TestExample(t *testing.T) {
 
 	g.ProcessNode = appendToSearchResult
 	g.ProcessEdge = increaseEdgeCounter
-	_ = g.BreadthFirstSearchFrom(1)
+	g.BreadthFirstSearchFrom(1)
 
 	fmt.Println(searchResult) // [1 0 2 3 4]
 	fmt.Println(edgeCount)    // 6
@@ -73,5 +73,57 @@ func TestExample(t *testing.T) {
 
 	fmt.Println(results)
 	// Output: map[0:33?? 1:33?? 2:33??]
+}
 
+func TestExample2(t *testing.T) {
+	var g graph.Graph
+	var err error
+
+	wanted := 10
+
+	findSpecificVertex := func(v int) error {
+		if v == wanted {
+			return fmt.Errorf("found wanted vertex %d", wanted)
+		}
+		return nil
+	}
+
+	// count edges out of 0
+	var edgeCount int
+	countSpecificEdges := func(v, w int) error {
+		if v == 0 {
+			edgeCount++
+		}
+		return nil
+	}
+
+	// initialize a rooted tree at 0 and run DSF
+	g, err = graph.NewDirected(12, map[int][]int{
+		0:  {1, 2, 3},
+		1:  {0},
+		2:  {0, 4, 5},
+		3:  {0, 6, 7, 8},
+		4:  {2},
+		5:  {2},
+		6:  {3},
+		7:  {3, 9, 10, 11},
+		8:  {3},
+		9:  {7},
+		10: {7},
+		11: {7},
+	})
+	if err != nil {
+		t.Error(err)
+	}
+
+	g.ProcessNode = findSpecificVertex
+	g.ProcessEdge = countSpecificEdges
+
+	err = g.DepthFirstSearchFrom(0)
+	if err != nil {
+		fmt.Printf("dfs says: saw %d out edges and %s\n", edgeCount, err)
+	} else {
+		fmt.Printf("saw %d out edges but wanted vertex not found\n", edgeCount)
+	}
+	// Output: dfs says: saw 3 out edges and found wanted vertex 10
 }

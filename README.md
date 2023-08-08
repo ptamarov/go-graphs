@@ -41,72 +41,144 @@ of the first example:
 
 ## Documentation 
 
-The documentation is available at [pkg.go.dev](https://pkg.go.dev/github.com/ptamarov/go-graphs).
+The full documentation is available at [pkg.go.dev](https://pkg.go.dev/github.com/ptamarov/go-graphs).
 
-## Methods 
+## Methods and usage 
 
-The package supports standard graph-traversal-based algorithms to query and analyse simple (un)directed graphs.
+The package supports standard graph-traversal-based algorithms to query and analyse simple (un)directed graphs. A
+graph stores three functions that are called when running a BFS or a DFS, which can return an `error` and in this
+way stop the run. 
+
+```go
+type Graph struct {
+	ProcessNode     func(int) error
+	ProcessNodeLate func(int) error
+	ProcessEdge     func(int, int) error
+}
+```
 
 #### func `BreadthFirstSearchFrom`
 ```go
-func (g *graph) BreadthFirstSearchFrom(source int, processNode func(int), processNodeLate func(int), processEdge func(int, int) error) error
+func (g *graph) BreadthFirstSearchFrom(source int) error
 ```
-`BreadthFirstSearchFrom` performs a breadth first search from the source node and processes nodes and edges as instructed by the
-input functions. The nodes are processed in the traversal order, and are _processed late_ once all of its neighbours have been
-discovered in the search. Edges are processed as they appear from a new discovered node to a node that has not yet been 
-processed. If the edge processing function returns an error, it will stop the search and return the error encountered.
+`BreadthFirstSearchFrom` performs a breadth first search from the source 
+node, processing the nodes and edges according to the graph search parameter 
+functions. It returns the first error raised by any of the parameters functions 
+if this happens during the run.
 
-_Example_: the following performs a standard breadth first search and counts the number of edges of the initialized graph.
+_Example_: the following code runs a breadth first search, returns the nodes encountered
+and counts the number of edges along the way.
 
 ```go
+import (
+	"fmt"
+
+	graph "github.com/ptamarov/go-graphs"
+)
+
+func main() {
 	var g graph.Graph
 	var err error
 	var searchResult []int
 
 	// add node to result when discovered
-	appendToSearchResult := func(v int) {
+	appendToSearchResult := func(v int) error {
 		searchResult = append(searchResult, v)
+		return nil
 	}
 
 	// count edges as they are discovered
 	var edgeCount int
-	increaseEdgeCounter := func(_, _ int) {
+	increaseEdgeCounter := func(_, _ int) error {
 		edgeCount++
+		return nil
 	}
-
-	// do no late node processing 
-	processNodeLate := func(_ int) {}
 
 	// initialize graph and perform breadth first search
 	g, err = graph.New(5, map[int][]int{0: {1, 2, 3, 4}, 1: {0, 2}, 2: {0, 1}, 3: {0, 4}, 4: {0, 3}})
 	if err != nil {
 		t.Error(err)
 	}
-	g.BreadthFirstSearchFrom(1, appendToSearchResult, processNodeLate, increaseEdgeCounter)
+
+	g.ProcessNode = appendToSearchResult
+	g.ProcessEdge = increaseEdgeCounter
+	g.BreadthFirstSearchFrom(1)
+
 	fmt.Println(searchResult) // [1 0 2 3 4]
-	fmt.Println(edgeCount) // 6
+	fmt.Println(edgeCount)    // 6
+}
 ```
 
 #### func `DepthFirstSearchFrom`
 ```go
-func (g *Graph) DepthFirstSearchFrom(source int) []int
+func (g *Graph) DepthFirstSearchFrom(source int) error
 ```
-`DepthFirstSearchFrom` performs a depth first search from the source node and 
-returns the discovered nodes in the resulting traversal order.  
+`DepthFirstSearchFrom` performs a depth first search from the source node, processing the nodes and edges according to the graph 
+search parameter functions. It returns the first error raised by any of the parameters functions if this happens during the run. 
 
-#### func `ConnectedComponents`
-```go
-func (g *Graph) ConnectedComponents() [][]int
-```
-`ConnectedComponents` returns an array of arrays, where each individual array 
-corresponds to a single connected component of the graph.
+_Example (DepthFirstSearchFrom)_. The following example initializes a directed tree rooted at `0` and runs a DFS from it.
+It stops once it finds vertex `10`. Along the way, it counts the number of edges out of `0` that are encountered. 
 
-#### func `ConnectedComponentOf`
-```go
-func (g *Graph) ConnectedComponentOf(source int) [][]int
+```go 
+import (
+	"fmt"
+
+	graph "github.com/ptamarov/go-graphs"
+)
+
+func main() {
+	var g graph.Graph
+	var err error
+
+	wanted := 10
+
+	findSpecificVertex := func(v int) error {
+		if v == wanted {
+			return fmt.Errorf("found wanted vertex %d", wanted)
+		}
+		return nil
+	}
+
+	// count edges out of 0
+	var edgeCount int
+	countSpecificEdges := func(v, w int) error {
+		if v == 0 {
+			edgeCount++
+		}
+		return nil
+	}
+
+	// initialize a rooted tree at 0 and set-up a DFS
+	g, err = graph.NewDirected(12, map[int][]int{
+		0:  {1, 2, 3},
+		1:  {0},
+		2:  {0, 4, 5},
+		3:  {0, 6, 7, 8},
+		4:  {2},
+		5:  {2},
+		6:  {3},
+		7:  {3, 9, 10, 11},
+		8:  {3},
+		9:  {7},
+		10: {7},
+		11: {7},
+	})
+	if err != nil {
+		t.Error(err)
+	}
+
+	g.ProcessNode = findSpecificVertex
+	g.ProcessEdge = countSpecificEdges
+
+	err = g.DepthFirstSearchFrom(0)
+	if err != nil {
+		fmt.Printf("dfs says: saw %d out edges and %s\n", edgeCount, err)
+	} else {
+		fmt.Printf("saw %d out edges but wanted vertex not found\n", edgeCount)
+	}
+	// Output: dfs says: saw 3 out edges and found wanted vertex 10
+}
 ```
-`ConnectedComponentOf` returns an array containig all nodes in the connected
-component of the source node.
 
 #### func `FindTwoColoring`
 ```go
@@ -116,29 +188,9 @@ func (g *Graph) FindTwoColoring() (map[int]int, error)
 a map assigning each node to `0` or `1` if successful and no error, or an 
 empty map and an error reporting a problematic edge if the attempt fails.
 
-#### func `DistanceFrom`
-```go
-func (*Graph) DistanceFrom(source int) map[int]int
-```
-`DistanceFrom` returns a map that assigns each node of the graph to the
-shortest distance to the source node. A value of `-1` reports the node is
-unreachable from source. 
+### Random graph generation
 
-#### func `ShortestDistanceTreeFrom`
-```go
-func (g *Graph) ShortestDistanceTreeFrom(source int) map[int]int
-```
-`ShortestDistanceTreeFrom` returns a map assigning a node to its parent
-in a shortest distance tree to the source. Any unreachable node is assigned
-the parent parent `-1`; source is also assigned the parent `-1`.
-
-#### func `ShortestPathsFrom`
-```go
-func (g *Graph) ShortestPathsFrom(source int) map[int][]int
-```
-`ShortestPathsFrom` returns a map sending a node to a shortest
-path to the source node. An empty path indicates that the node
-is unreachable from the source node.
+The package supports the generation of random graphs. 
 
 #### func `NewRandom`
 ```go
@@ -148,7 +200,7 @@ func NewRandom(r *rand.Rand, n int, m int) (Graph, error)
 `NewRandom` generates a random graph with `n` nodes and `m` edges in
 in the [Erdős–Rényi model](https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93R%C3%A9nyi_model).
 
-_Example_. There are exactly 3 labelled graphs with 3 nodes and 2 edges, and each is uniquely
+_Example (NewRandom)_. There are exactly 3 labelled graphs with 3 nodes and 2 edges, and each is uniquely
 determined by a unique node of degree two. The following generates 10000 random graphs with 
 3 nodes and 2 edges and prints the number of ocurrences of each. 
 
@@ -157,6 +209,8 @@ package main
 
 import (
     "fmt"
+	"rand"
+	"time"
 
     graph "github.com/ptamarov/go-graphs"
 )
@@ -173,6 +227,7 @@ func main() {
     }
 
     fmt.Println(results)
-    // Output: map[0:3300 1:3355 2:3345]
+    // Output: map[0:33?? 1:33?? 2:33??] 
+	// Missing digits may vary.
 }
 ```
