@@ -12,45 +12,35 @@ const (
 // of a dictionary and nil if a two coloring exists, or a nil map and an error reporting a problematic
 // edge if the two coloring could not be found.
 func (g *Graph) FindTwoColoring() (map[int]int, error) {
-	var coloringError error
-	var currentColor int
-
 	discovered := make(map[int]bool, g.numVertices)
 	coloring := make(map[int]int, g.numVertices)
+
+	// initialize all nodes as uncolored
 	for i := 0; i < g.numVertices; i++ {
 		coloring[i] = uncolored
 	}
-	currentColor = white
 
-loop:
-	for i := 0; i < g.numVertices; i++ {
-		if discovered[i] {
-			continue loop
+	// mark nodes as discovered in BFS
+	markAsDiscovered := func(v int) {
+		discovered[v] = true
+	}
+
+	// check that coloring is sound, else return error
+	checkEdgeColoring := func(a, b int) error {
+		if coloring[a] == coloring[b] {
+			return fmt.Errorf("warning: not bipartite due to (%d, %d)", a, b)
 		}
+		coloring[b] = complement(coloring[a])
+		return nil
+	}
 
-		discovered[i] = true
-
-		currentLayer := []int{i}
-		nextLayer := []int{}
-
-		for len(currentLayer) != 0 {
-			for _, parent := range currentLayer {
-				coloring[parent] = currentColor
-				for _, child := range g.adj[parent] {
-					if discovered[child] || g.directed {
-						coloringError = checkEdgeColoring(parent, child, coloring)
-						if coloringError != nil {
-							return nil, coloringError
-						}
-					}
-					if !discovered[child] {
-						nextLayer = append(nextLayer, child)
-						discovered[child] = true
-					}
-				}
+	for i := 0; i < g.numVertices; i++ {
+		if !discovered[i] {
+			coloring[i] = white
+			err := g.BreadthFirstSearchFrom(i, markAsDiscovered, ignoreVertices, checkEdgeColoring)
+			if err != nil {
+				return map[int]int{}, err
 			}
-			currentLayer, nextLayer = nextLayer, []int{}
-			currentColor = complement(currentColor) // color changes from layer to layer
 		}
 	}
 	return coloring, nil
@@ -64,11 +54,4 @@ func complement(color int) int {
 		return white
 	}
 	return uncolored
-}
-
-func checkEdgeColoring(a, b int, coloring map[int]int) error {
-	if coloring[a] == coloring[b] {
-		return fmt.Errorf("warning: not bipartite due to (%d, %d)", a, b)
-	}
-	return nil
 }

@@ -3,7 +3,7 @@ package graph
 import "fmt"
 
 // validate verifies that the graph data is valid by performing several checks:
-//   - Check for a positive number of vertices.
+//   - Check for a positive number of nodes.
 //   - Check that adjacency list is of the correct lenght.
 //   - Check that keys of adjacency list are precisely [0, g.NumVertices)
 //   - Check that no node is out of bounds in the values of the arrays in the adj. list.
@@ -12,11 +12,11 @@ import "fmt"
 func (g *Graph) validate() error {
 
 	if g.numVertices == 0 {
-		return fmt.Errorf("graph cannot have no vertices")
+		return fmt.Errorf("graph cannot have no nodes")
 	}
 
 	if len(g.adj) != g.numVertices {
-		return fmt.Errorf("adjacency list has length %d but have %d vertices", len(g.adj), g.numVertices)
+		return fmt.Errorf("adjacency list has length %d but have %d nodes", len(g.adj), g.numVertices)
 	}
 
 	for current := 0; current < g.numVertices; current++ {

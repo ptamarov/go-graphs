@@ -13,7 +13,7 @@ func (g *Graph) updateConnectedComponents() {
 	for i := 0; i < g.numVertices; i++ {
 		if !discovered[i] {
 			discovered[i] = true
-			g.BreadthFirstSearchFrom(i, appendToComponentAndDiscover, func(_ int) {}, func(_, _ int) {})
+			g.BreadthFirstSearchFrom(i, appendToComponentAndDiscover, ignoreVertices, ignoreEdges)
 			components = append(components, newComponent)
 			newComponent = []int{}
 		}
@@ -28,7 +28,7 @@ func (g *Graph) ConnectedComponentOf(source int) []int {
 		newComponent = append(newComponent, v)
 	}
 
-	g.BreadthFirstSearchFrom(source, appendToComponent, func(_ int) {}, func(_, _ int) {})
+	g.BreadthFirstSearchFrom(source, appendToComponent, ignoreVertices, ignoreEdges)
 
 	return newComponent
 }

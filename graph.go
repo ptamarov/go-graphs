@@ -62,7 +62,7 @@ func (g *Graph) ConnectedComponents() [][]int {
 	return g.components
 }
 
-// Order returns the number of vertices in the graph.
+// Order returns the number of nodes in the graph.
 func (g *Graph) Order() int {
 	return g.numVertices
 }

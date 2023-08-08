@@ -20,7 +20,7 @@ func TestBreadthFirstSearch(t *testing.T) {
 				addToSearchResult := func(v int) {
 					searchResult = append(searchResult, v)
 				}
-				g.BreadthFirstSearchFrom(source, addToSearchResult, func(_ int) {}, func(_, _ int) {})
+				g.BreadthFirstSearchFrom(source, addToSearchResult, ignoreVertices, ignoreEdges)
 				got := searchResult
 				want := expectedSearchResult
 				for i := range got {

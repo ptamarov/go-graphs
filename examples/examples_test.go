@@ -14,18 +14,19 @@ func TestExample(t *testing.T) {
 	var err error
 	var searchResult []int
 
-	// decide how to process vertices during the search
+	// decide how to process nodes during the search
 	appendToSearchResult := func(v int) {
 		searchResult = append(searchResult, v)
 	}
 
 	// count edges
 	var edgeCount int
-	increaseEdgeCounter := func(_, _ int) {
+	increaseEdgeCounter := func(_, _ int) error {
 		edgeCount++
+		return nil
 	}
 
-	// do not process vertices after going through children
+	// do not process nodes after going through children
 	processVertexLate := func(_ int) {}
 
 	// initialize graph and perform BSF
@@ -50,7 +51,7 @@ func TestExample(t *testing.T) {
 	fmt.Println(searchResult)
 	fmt.Println(edgeCount)
 
-	// Generate a 10 000 random graphs with 3 vertices and 2 edges in the Erdős–Rényi model.
+	// Generate a 10 000 random graphs with 3 nodes and 2 edges in the Erdős–Rényi model.
 	r := rand.New(rand.NewSource(time.Now().Unix()))
 	results := make(map[int]int, 3)
 

@@ -4,11 +4,14 @@ import (
 	"fmt"
 )
 
-// BreadthFirstSearchFrom performs a breadth first search from the source vertex and processes vertices and edges as instructed by the
-// input functions. The vertices are processed in the traversal order, and are _processed late_ once all of its neighbours have been
+var ignoreEdges = func(_, _ int) error { return nil }
+var ignoreVertices = func(_ int) {}
+
+// BreadthFirstSearchFrom performs a breadth first search from the source vertex and processes nodes and edges as instructed by the
+// input functions. The nodes are processed in the traversal order, and are _processed late_ once all of its neighbours have been
 // discovered in the search. Edges are processed as they appear from a new discovered vertex to a vertex that has not yet been
-// processed.
-func (g *Graph) BreadthFirstSearchFrom(source int, processVertex func(int), processVertexLate func(int), processEdge func(int, int)) {
+// processed. If the edge processing function returns an error, the search stops and the function returns this error.
+func (g *Graph) BreadthFirstSearchFrom(source int, processNode func(int), processNodeLate func(int), processEdge func(int, int) error) error {
 	if source < 0 || source > g.numVertices {
 		panic(fmt.Sprintf("source vertex %d out of range %d", source, g.numVertices))
 	}
@@ -22,20 +25,24 @@ func (g *Graph) BreadthFirstSearchFrom(source int, processVertex func(int), proc
 
 	for len(queue) != 0 {
 		current, queue = queue[0], queue[1:]
-		processVertex(current)
+		processNode(current)
 		processed[current] = true
 
 		for _, child := range g.adj[current] {
 			if !processed[child] || g.directed {
-				processEdge(current, child)
+				err := processEdge(current, child)
+				if err != nil {
+					return err
+				}
 			}
 			if !discovered[child] {
 				queue = append(queue, child)
 				discovered[child] = true
 			}
 		}
-		processVertexLate(current)
+		processNodeLate(current)
 	}
+	return nil
 }
 
 // DepthFirstSearchFrom performs a DepthFirstSearchFrom in the graph starting from the input source node.

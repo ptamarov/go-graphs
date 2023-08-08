@@ -10,8 +10,8 @@ type edge struct {
 	t int
 }
 
-// NewRandom generates a random graph among those graphs with n vertices and m edges in the Erdős–Rényi model.
-// In this model each graph with n vertices and m edge is equiprobable.
+// NewRandom generates a random graph among those graphs with n nodes and m edges in the Erdős–Rényi model.
+// In this model each graph with n nodes and m edge is equiprobable.
 func NewRandom(r *rand.Rand, n int, m int) (Graph, error) {
 
 	if 2*m > n*(n-1) {
