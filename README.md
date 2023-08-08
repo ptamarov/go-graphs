@@ -15,34 +15,13 @@ A graph can be constructed with any of the following functions:
 ```go
 func New(NumVertices int, Adj map[int][]int) (graph, error)
 ```
-`New` creates a new undirected graph or returns an error if the
-input data is invalid. 
-
-_Example (New)_. The following example creates a "butterfly" graph with five vertices
-and performs a breadth first search starting from vertex `1`.
-```go
-package main 
-
-import (
-    "fmt"
-
-    graph "github.com/ptamarov/go-graphs"
-)
-
-func main() {
-	g, _ := graph.New(5, map[int][]int{0: {1, 2, 3, 4}, 1: {0, 2}, 2: {0, 1}, 3: {0, 4}, 4: {0, 3}})
-    search := g.BreadthFirstSearchFrom(1)
-    fmt.Println(search)
-    // Output: [1 0 2 3 4]
-}
-```
+`New` creates a new undirected graph or returns an error if the input data is invalid. 
 
 ### func `NewFromJSON`
 ```go
 func NewFromJSON(filepath string) (graph, error) 
 ```
-`NewFromJSON` creates a graph from a JSON file or returns an error if the
-input data is invalid.
+`NewFromJSON` creates a graph from a JSON file or returns an error if the input data is invalid.
 
 _Example (NewFromJSON)_. The following example shows a valid JSON format to initalize the butterfly graph
 of the first example:
@@ -71,10 +50,43 @@ and analyse simple (un)directed graphs.
 
 #### func `BreadthFirstSearchFrom`
 ```go
-func (g *graph) BreadthFirstSearchFrom(source int) []int
+func (g *graph) BreadthFirstSearchFrom(source int, processVertex func(int), processVertexLate func(int), processEdge func(int, int))
 ```
-`BreadthFirstSearchFrom` performs a breadth first search from the source vertex
-and returns the discovered vertices in the resulting traversal order. 
+`BreadthFirstSearchFrom` performs a breadth first search from the source vertex and processes vertices and edges as instructed by the
+input functions. The vertices are processed in the traversal order, and are _processed late_ once all of its neighbours have been
+discovered in the search. Edges are processed as they appear from a new discovered vertex to a vertex that has not yet been 
+processed. 
+
+_Example_: the following performs a standard breadth first search and counts the number of edges of the initialized graph.
+
+```go
+	var g graph.Graph
+	var err error
+	var searchResult []int
+
+	// add vertex to result when discovered
+	appendToSearchResult := func(v int) {
+		searchResult = append(searchResult, v)
+	}
+
+	// count edges as they are discovered
+	var edgeCount int
+	increaseEdgeCounter := func(_, _ int) {
+		edgeCount++
+	}
+
+	// do no late vertex processing 
+	processVertexLate := func(_ int) {}
+
+	// initialize graph and perform breadth first search
+	g, err = graph.New(5, map[int][]int{0: {1, 2, 3, 4}, 1: {0, 2}, 2: {0, 1}, 3: {0, 4}, 4: {0, 3}})
+	if err != nil {
+		t.Error(err)
+	}
+	g.BreadthFirstSearchFrom(1, appendToSearchResult, processVertexLate, increaseEdgeCounter)
+	fmt.Println(searchResult) // [1 0 2 3 4]
+	fmt.Println(edgeCount) // 6
+```
 
 #### func `DepthFirstSearchFrom`
 ```go
