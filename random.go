@@ -5,6 +5,11 @@ import (
 	"math/rand"
 )
 
+type edge struct {
+	s int
+	t int
+}
+
 // RandomGraph generates a random graph among those graphs with n vertices and m edges in the Erdős–Rényi model,
 // In this model each graph with n vertices and m edge is equiprobable.
 func RandomGraph(r *rand.Rand, n int, m int) (Graph, error) {
@@ -15,7 +20,7 @@ func RandomGraph(r *rand.Rand, n int, m int) (Graph, error) {
 
 	Adj := make(map[int][]int, n)
 
-	univ := []edge{}
+	univ := [](edge){}
 
 	for i := 0; i < n; i++ {
 		Adj[i] = []int{}
