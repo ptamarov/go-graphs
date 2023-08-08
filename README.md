@@ -61,13 +61,12 @@ type Graph struct {
 ```go
 func (g *graph) BreadthFirstSearchFrom(source int) error
 ```
-`BreadthFirstSearchFrom` performs a breadth first search from the source 
-node, processing the nodes and edges according to the graph search parameter 
-functions. It returns the first error raised by any of the parameters functions 
-if this happens during the run.
+`BreadthFirstSearchFrom` performs a breadth first search from the source node, processing the nodes and edges 
+according to the graph search functions. It returns the first error raised by any of the search functions if 
+this happens during the run.
 
-_Example_: the following code runs a breadth first search, returns the nodes encountered
-and counts the number of edges along the way.
+_Example_: the following code runs a breadth first search, returns the nodes encountered and counts the number 
+of edges along the way.
 
 ```go
 import (
@@ -114,7 +113,7 @@ func main() {
 func (g *Graph) DepthFirstSearchFrom(source int) error
 ```
 `DepthFirstSearchFrom` performs a depth first search from the source node, processing the nodes and edges according to the graph 
-search parameter functions. It returns the first error raised by any of the parameters functions if this happens during the run. 
+search functions. It returns the first error raised by any of the search functions if this happens during the run. 
 
 _Example (DepthFirstSearchFrom)_. The following example initializes a directed tree rooted at `0` and runs a DFS from it.
 It stops once it finds vertex `10`. Along the way, it counts the number of edges out of `0` that are encountered. 
