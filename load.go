@@ -16,6 +16,7 @@ type testCase struct {
 	ExpectedSearches     map[int][]int `json:"ExpectedSearches"`
 	ExpectedEdgeCount    int           `json:"ExpectedEdgecount"`
 	ExpectedMatchingSize int           `json:"ExpectedMatchingSize"`
+	ExpectedComponents   [][]int       `json:"ExpectedComponents"`
 	ExpectedCycle        bool          `json:"ExpectedCycle"`
 	// add more expected results for other tests
 }

@@ -14,10 +14,15 @@ func TestBreadthFirstSearch(t *testing.T) {
 			t.Errorf("while generating graph: %s", err)
 		}
 
-		for source, searchResult := range test.ExpectedSearches {
+		for source, expectedSearchResult := range test.ExpectedSearches {
 			t.Run(fmt.Sprintf(name+"/source=%d", source), func(t *testing.T) {
-				got := g.BreadthFirstSearchFrom(source)
-				want := searchResult
+				searchResult := []int{}
+				addToSearchResult := func(v int) {
+					searchResult = append(searchResult, v)
+				}
+				g.BreadthFirstSearchFrom(source, addToSearchResult, func(_ int) {}, func(_, _ int) {})
+				got := searchResult
+				want := expectedSearchResult
 				for i := range got {
 					if got[i] != want[i] {
 						t.Errorf("BFS [%s] from %d: expected %d at position %d but got %d instead", name, source, want[i], i, got[i])
@@ -39,6 +44,7 @@ func TestDepthFirstSearch(t *testing.T) {
 
 		for source, searchResult := range test.ExpectedSearches {
 			t.Run(fmt.Sprintf(name+"/source=%d", source), func(t *testing.T) {
+
 				got := g.DepthFirstSearchFrom(source)
 				want := searchResult
 				for i := range got {

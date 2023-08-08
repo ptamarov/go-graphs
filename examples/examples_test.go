@@ -12,26 +12,43 @@ import (
 func TestExample(t *testing.T) {
 	var g graph.Graph
 	var err error
+	var searchResult []int
 
-	// BFS in an undirected graph
+	// decide how to process vertices during the search
+	appendToSearchResult := func(v int) {
+		searchResult = append(searchResult, v)
+	}
+
+	// count edges
+	var edgeCount int
+	increaseEdgeCounter := func(_, _ int) {
+		edgeCount++
+	}
+
+	// do not process vertices after going through children
+	processVertexLate := func(_ int) {}
+
+	// initialize graph and perform BSF
 	g, err = graph.New(5, map[int][]int{0: {1, 2, 3, 4}, 1: {0, 2}, 2: {0, 1}, 3: {0, 4}, 4: {0, 3}})
-
 	if err != nil {
 		t.Error(err)
 	}
+	g.BreadthFirstSearchFrom(1, appendToSearchResult, processVertexLate, increaseEdgeCounter)
+	fmt.Println(searchResult)
+	fmt.Println(edgeCount)
 
-	search := g.BreadthFirstSearchFrom(1)
-	fmt.Println(search)
+	// clear cache
+	searchResult = []int{}
+	edgeCount = 0
 
-	// BFS in a directed graph
+	// initialize directed graph and perform BSF
 	g, err = graph.NewDirected(5, map[int][]int{0: {2, 4}, 1: {0}, 2: {1}, 3: {0}, 4: {3}})
-
 	if err != nil {
 		t.Error(err)
 	}
-
-	search = g.BreadthFirstSearchFrom(1)
-	fmt.Println(search)
+	g.BreadthFirstSearchFrom(1, appendToSearchResult, processVertexLate, increaseEdgeCounter)
+	fmt.Println(searchResult)
+	fmt.Println(edgeCount)
 
 	// Generate a 10 000 random graphs with 3 vertices and 2 edges in the Erdős–Rényi model.
 	r := rand.New(rand.NewSource(time.Now().Unix()))

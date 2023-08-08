@@ -1,55 +1,34 @@
 package graph
 
-// ConnectedComponents returns a list of list with the connected components of the graph
 func (g *Graph) updateConnectedComponents() {
 	discovered := make(map[int]bool, g.numVertices)
 	components := [][]int{}
 
-loop:
-	for i := 0; i < g.numVertices; i++ {
-		if discovered[i] {
-			continue loop
-		}
-		discovered[i] = true
-
-		newComponent := []int{}
-		stack := []int{i}
-
-		var current int
-		for len(stack) != 0 {
-			current, stack = stack[0], stack[1:]
-			for _, child := range g.adj[current] {
-				if !discovered[child] {
-					stack = append(stack, child)
-					discovered[child] = true
-				}
-			}
-			newComponent = append(newComponent, current)
-		}
-		components = append(components, newComponent)
+	var newComponent []int
+	appendToComponentAndDiscover := func(v int) {
+		discovered[v] = true
+		newComponent = append(newComponent, v)
 	}
 
+	for i := 0; i < g.numVertices; i++ {
+		if !discovered[i] {
+			discovered[i] = true
+			g.BreadthFirstSearchFrom(i, appendToComponentAndDiscover, func(_ int) {}, func(_, _ int) {})
+			components = append(components, newComponent)
+			newComponent = []int{}
+		}
+	}
 	g.components = components
 }
 
 // ConnectedComponentOf returns the connected component of the source node.
 func (g *Graph) ConnectedComponentOf(source int) []int {
-	discovered := make(map[int]bool, g.numVertices)
-	component := []int{}
-
-	discovered[source] = true
-	stack := []int{source}
-
-	var current int
-	for len(stack) != 0 {
-		current, stack = stack[0], stack[1:]
-		for _, child := range g.adj[current] {
-			if !discovered[child] {
-				stack = append(stack, child)
-				discovered[child] = true
-			}
-		}
-		component = append(component, current)
+	var newComponent []int
+	appendToComponent := func(v int) {
+		newComponent = append(newComponent, v)
 	}
-	return component
+
+	g.BreadthFirstSearchFrom(source, appendToComponent, func(_ int) {}, func(_, _ int) {})
+
+	return newComponent
 }
