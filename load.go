@@ -42,6 +42,7 @@ func loadTestsFromJSON(filepath string) map[string]testCase {
 	return testCaseByName
 }
 
+// NewGraphFromJSON creates a new graph from a valid JSON input.
 func NewGraphFromJSON(filepath string) (Graph, error) {
 	filein, err := os.Open(filepath)
 	if err != nil {

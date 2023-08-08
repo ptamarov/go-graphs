@@ -8,6 +8,8 @@ type Graph struct {
 	components  [][]int
 }
 
+// NewGraph creates a new undirected graph or returns an error if the
+// input data is invalid.
 func NewGraph(NumVertices int, Adj map[int][]int) (Graph, error) {
 	g := Graph{numVertices: NumVertices, adj: Adj, directed: false}
 	err := g.validate()
@@ -28,6 +30,8 @@ func NewGraph(NumVertices int, Adj map[int][]int) (Graph, error) {
 	return g, nil
 }
 
+// NewDirGraph creates a new directed graph or returns an error if the
+// input data is invalid.
 func NewDirGraph(NumVertices int, Adj map[int][]int) (Graph, error) {
 	g := Graph{numVertices: NumVertices, adj: Adj, directed: true}
 	err := g.validate()
@@ -63,7 +67,7 @@ func (g *Graph) NumberOfEdges() int {
 	return g.numEdges
 }
 
-// Degree returns the degree of a node.
+// Degree returns the degree of a node. If the graph is oriented, it returns the outdegree.
 func (g *Graph) Degree(node int) int {
 	return len(g.adj[node])
 }
