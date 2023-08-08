@@ -5,15 +5,18 @@ func (g *Graph) updateConnectedComponents() {
 	components := [][]int{}
 
 	var newComponent []int
-	appendToComponentAndDiscover := func(v int) {
+
+	// add nodes to new component
+	g.ProcessNode = func(v int) error {
 		discovered[v] = true
 		newComponent = append(newComponent, v)
+		return nil
 	}
 
 	for i := 0; i < g.numVertices; i++ {
 		if !discovered[i] {
 			discovered[i] = true
-			g.BreadthFirstSearchFrom(i, appendToComponentAndDiscover, ignoreVertices, ignoreEdges)
+			g.BreadthFirstSearchFrom(i)
 			components = append(components, newComponent)
 			newComponent = []int{}
 		}
@@ -24,11 +27,12 @@ func (g *Graph) updateConnectedComponents() {
 // ConnectedComponentOf returns the connected component of the source node.
 func (g *Graph) ConnectedComponentOf(source int) []int {
 	var newComponent []int
-	appendToComponent := func(v int) {
+
+	g.ProcessNode = func(v int) error {
 		newComponent = append(newComponent, v)
+		return nil
 	}
 
-	g.BreadthFirstSearchFrom(source, appendToComponent, ignoreVertices, ignoreEdges)
-
+	g.BreadthFirstSearchFrom(source)
 	return newComponent
 }

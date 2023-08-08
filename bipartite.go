@@ -21,12 +21,13 @@ func (g *Graph) FindTwoColoring() (map[int]int, error) {
 	}
 
 	// mark nodes as discovered in BFS
-	markAsDiscovered := func(v int) {
+	g.ProcessNode = func(v int) error {
 		discovered[v] = true
+		return nil
 	}
 
 	// check that coloring is sound, else return error
-	checkEdgeColoring := func(a, b int) error {
+	g.ProcessEdge = func(a, b int) error {
 		if coloring[a] == coloring[b] {
 			return fmt.Errorf("warning: not bipartite due to (%d, %d)", a, b)
 		}
@@ -37,7 +38,7 @@ func (g *Graph) FindTwoColoring() (map[int]int, error) {
 	for i := 0; i < g.numVertices; i++ {
 		if !discovered[i] {
 			coloring[i] = white
-			err := g.BreadthFirstSearchFrom(i, markAsDiscovered, ignoreVertices, checkEdgeColoring)
+			err := g.BreadthFirstSearchFrom(i)
 			if err != nil {
 				return map[int]int{}, err
 			}

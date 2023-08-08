@@ -17,16 +17,16 @@ func TestBreadthFirstSearch(t *testing.T) {
 		for source, expectedSearchResult := range test.ExpectedSearches {
 			t.Run(fmt.Sprintf(name+"/source=%d", source), func(t *testing.T) {
 				searchResult := []int{}
-				addToSearchResult := func(v int) {
+				g.ProcessNode = func(v int) error {
 					searchResult = append(searchResult, v)
+					return nil
 				}
-				g.BreadthFirstSearchFrom(source, addToSearchResult, ignoreVertices, ignoreEdges)
+				g.BreadthFirstSearchFrom(source)
 				got := searchResult
 				want := expectedSearchResult
-				for i := range got {
-					if got[i] != want[i] {
-						t.Errorf("BFS [%s] from %d: expected %d at position %d but got %d instead", name, source, want[i], i, got[i])
-					}
+
+				if err := isEqual[int](got, want); err != nil {
+					t.Errorf("while doing BFS: %s", err)
 				}
 			})
 		}
@@ -42,16 +42,18 @@ func TestDepthFirstSearch(t *testing.T) {
 			t.Errorf("while generating graph: %s", err)
 		}
 
-		for source, searchResult := range test.ExpectedSearches {
+		for source, expectedSearchResult := range test.ExpectedSearches {
 			t.Run(fmt.Sprintf(name+"/source=%d", source), func(t *testing.T) {
-
-				got := g.DepthFirstSearchFrom(source)
-				want := searchResult
-				for i := range got {
-					if got[i] != want[i] {
-						// t.Errorf("DFS [%s] from %d: expected %d at position %d but got %d instead", name, source, want[i], i, got[i])
-						t.Errorf("expected %v, got %v", want, got)
-					}
+				searchResult := []int{}
+				g.ProcessNode = func(v int) error {
+					searchResult = append(searchResult, v)
+					return nil
+				}
+				g.DepthFirstSearchFrom(source)
+				got := searchResult
+				want := expectedSearchResult
+				if err := isEqual[int](got, want); err != nil {
+					t.Errorf("while doing DFS: %s", err)
 				}
 			})
 		}
@@ -69,7 +71,7 @@ func TestEdgeCount(t *testing.T) {
 			}
 			got, want := g.Size(), test.ExpectedEdgeCount
 			if got != want {
-				t.Errorf("Wanted %d edges but got %d for %s", want, got, name)
+				t.Errorf("wanted %d edges but got %d for %s", want, got, name)
 			}
 		})
 	}

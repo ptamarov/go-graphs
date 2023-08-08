@@ -17,7 +17,6 @@ func TestComponentFinding(t *testing.T) {
 
 			g.updateConnectedComponents()
 			got := g.components
-
 			want := test.ExpectedComponents
 			if len(got) != len(want) {
 				t.Errorf("got component size %d different from expected size %d", len(got), len(want))

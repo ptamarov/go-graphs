@@ -4,14 +4,16 @@ import (
 	"fmt"
 )
 
-var ignoreEdges = func(_, _ int) error { return nil }
-var ignoreVertices = func(_ int) {}
-
-// BreadthFirstSearchFrom performs a breadth first search from the source vertex and processes nodes and edges as instructed by the
-// input functions. The nodes are processed in the traversal order, and are _processed late_ once all of its neighbours have been
-// discovered in the search. Edges are processed as they appear from a new discovered vertex to a vertex that has not yet been
-// processed. If the edge processing function returns an error, the search stops and the function returns this error.
-func (g *Graph) BreadthFirstSearchFrom(source int, processNode func(int), processNodeLate func(int), processEdge func(int, int) error) error {
+// BreadthFirstSearchFrom performs a breadth first search from the source vertex
+// and processes nodes and edges as instructed by the graph search functions.
+//
+// The nodes are processed in the traversal order, and are processed late once all of
+// its neighbours have been discovered in the search. Edges are processed as they
+// appear from a new discovered vertex to a vertex that has not yet been processed.
+//
+// If any of the search functions returns an error during the search, the search stops
+// and the function returns this error.
+func (g *Graph) BreadthFirstSearchFrom(source int) error {
 	if source < 0 || source > g.numVertices {
 		panic(fmt.Sprintf("source vertex %d out of range %d", source, g.numVertices))
 	}
@@ -25,12 +27,15 @@ func (g *Graph) BreadthFirstSearchFrom(source int, processNode func(int), proces
 
 	for len(queue) != 0 {
 		current, queue = queue[0], queue[1:]
-		processNode(current)
+		err := g.ProcessNode(current)
+		if err != nil {
+			return err
+		}
 		processed[current] = true
 
 		for _, child := range g.adj[current] {
 			if !processed[child] || g.directed {
-				err := processEdge(current, child)
+				err := g.ProcessEdge(current, child)
 				if err != nil {
 					return err
 				}
@@ -40,14 +45,47 @@ func (g *Graph) BreadthFirstSearchFrom(source int, processNode func(int), proces
 				discovered[child] = true
 			}
 		}
-		processNodeLate(current)
+		g.ProcessNodeLate(current)
 	}
 	return nil
 }
 
-// DepthFirstSearchFrom performs a DepthFirstSearchFrom in the graph starting from the input source node.
-func (g *Graph) DepthFirstSearchFrom(source int) []int {
+// DepthFirstSearchFrom performs a depth first search from the source vertex
+// and processes nodes and edges as instructed by the graph search functions.
+//
+// The nodes are processed in the traversal order, and are processed late once all of
+// its children have been processed in the traversal order. Edges are processed as they
+// appear from a new discovered vertex to a vertex that has not yet been processed.
+//
+// If any of the search functions returns an error during the search, the search stops
+// and the function returns this error.
+func (g *Graph) DepthFirstSearchFrom(source int) error {
 	ci := g.newCachedInput()
-	ci = g.cachedDepthFirstSearchFrom(source, ci)
-	return ci.searchResult
+	_, err := g.cachedDepthFirstSearchFrom(source, ci)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (g *Graph) GetInOutTimesFrom(source int) (map[int]int, map[int]int) {
+	var time int
+	var entryTimes map[int]int
+	var exitTimes map[int]int
+
+	g.ProcessNode = func(v int) error {
+		time++
+		entryTimes[v] = time
+		return nil
+	}
+
+	g.ProcessNodeLate = func(v int) error {
+		time++
+		exitTimes[v] = time
+		return nil
+	}
+
+	g.DepthFirstSearchFrom(source)
+
+	return entryTimes, exitTimes
 }

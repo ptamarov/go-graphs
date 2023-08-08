@@ -14,29 +14,31 @@ func TestExample(t *testing.T) {
 	var err error
 	var searchResult []int
 
-	// decide how to process nodes during the search
-	appendToSearchResult := func(v int) {
+	// add node to result when discovered
+	appendToSearchResult := func(v int) error {
 		searchResult = append(searchResult, v)
+		return nil
 	}
 
-	// count edges
+	// count edges as they are discovered
 	var edgeCount int
 	increaseEdgeCounter := func(_, _ int) error {
 		edgeCount++
 		return nil
 	}
 
-	// do not process nodes after going through children
-	processVertexLate := func(_ int) {}
-
-	// initialize graph and perform BSF
+	// initialize graph and perform breadth first search
 	g, err = graph.New(5, map[int][]int{0: {1, 2, 3, 4}, 1: {0, 2}, 2: {0, 1}, 3: {0, 4}, 4: {0, 3}})
 	if err != nil {
 		t.Error(err)
 	}
-	g.BreadthFirstSearchFrom(1, appendToSearchResult, processVertexLate, increaseEdgeCounter)
-	fmt.Println(searchResult)
-	fmt.Println(edgeCount)
+
+	g.ProcessNode = appendToSearchResult
+	g.ProcessEdge = increaseEdgeCounter
+	_ = g.BreadthFirstSearchFrom(1)
+
+	fmt.Println(searchResult) // [1 0 2 3 4]
+	fmt.Println(edgeCount)    // 6
 
 	// clear cache
 	searchResult = []int{}
@@ -47,9 +49,11 @@ func TestExample(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	g.BreadthFirstSearchFrom(1, appendToSearchResult, processVertexLate, increaseEdgeCounter)
-	fmt.Println(searchResult)
-	fmt.Println(edgeCount)
+	g.ProcessEdge = increaseEdgeCounter
+	g.ProcessNode = appendToSearchResult
+	g.BreadthFirstSearchFrom(1)
+	fmt.Println(searchResult) // [1 0 2 4 3]
+	fmt.Println(edgeCount)    // 6
 
 	// Generate a 10 000 random graphs with 3 nodes and 2 edges in the Erdős–Rényi model.
 	r := rand.New(rand.NewSource(time.Now().Unix()))
@@ -68,6 +72,6 @@ func TestExample(t *testing.T) {
 	}
 
 	fmt.Println(results)
-	// Output: map[0:3300 1:3355 2:3345]
+	// Output: map[0:33?? 1:33?? 2:33??]
 
 }
