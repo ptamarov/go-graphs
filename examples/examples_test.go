@@ -126,4 +126,28 @@ func TestExample2(t *testing.T) {
 		fmt.Printf("saw %d out edges but wanted vertex not found\n", edgeCount)
 	}
 	// Output: dfs says: saw 3 out edges and found wanted vertex 10
+
+	var time int
+	entryTimes := make(map[int]int, g.Order())
+	exitTimes := make(map[int]int, g.Order())
+
+	g.ProcessNode = func(v int) error {
+		time++
+		entryTimes[v] = time
+		return nil
+	}
+
+	g.ProcessNodeLate = func(v int) error {
+		time++
+		exitTimes[v] = time
+		return nil
+	}
+
+	g.DepthFirstSearchFrom(0)
+	fmt.Println(entryTimes)
+	fmt.Println(exitTimes)
+
+	// Output:
+	// map[0:1 1:2 2:4 3:10 4:5 5:7 6:11 7:13 8:21 9:14 10:16 11:18]
+	// map[0:24 1:3 2:9 3:23 4:6 5:8 6:12 7:20 8:22 9:15 10:17 11:19]
 }
