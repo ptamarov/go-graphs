@@ -67,25 +67,3 @@ func (g *Graph) DepthFirstSearchFrom(source int) error {
 	}
 	return nil
 }
-
-func (g *Graph) GetInOutTimesFrom(source int) (map[int]int, map[int]int) {
-	var time int
-	var entryTimes map[int]int
-	var exitTimes map[int]int
-
-	g.ProcessNode = func(v int) error {
-		time++
-		entryTimes[v] = time
-		return nil
-	}
-
-	g.ProcessNodeLate = func(v int) error {
-		time++
-		exitTimes[v] = time
-		return nil
-	}
-
-	g.DepthFirstSearchFrom(source)
-
-	return entryTimes, exitTimes
-}
