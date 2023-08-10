@@ -17,6 +17,12 @@ func New(NumVertices int, Adj map[int][]int) (graph, error)
 ```
 `New` creates a new undirected graph or returns an error if the input data is invalid. 
 
+### func `NewDirected`
+```go
+func NewDirected(NumVertices int, Adj map[int][]int) (graph, error)
+```
+`NewDirected` creates a new directed graph or returns an error if the input data is invalid. 
+
 ### func `NewFromJSON`
 ```go
 func NewFromJSON(filepath string) (graph, error) 

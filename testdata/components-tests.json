@@ -12,7 +12,7 @@
         }
     },
     "square-diag": {
-        "ExpectedComponents": [ [ 0, 1, 3, 4, 2 ] ],
+        "ExpectedComponents": [ [ 0, 1, 2, 3, 4 ] ],
         "NumVertices": 5,
         "Directed": false,
         "Adj": {
@@ -24,7 +24,7 @@
         }
     },
     "x-wing": {
-        "ExpectedComponents": [ [ 0, 2, 3, 1, 4, 5 ] ],
+        "ExpectedComponents": [ [ 0, 1, 2, 3, 4, 5 ] ],
         "NumVertices": 6,
         "Directed": false,
         "Adj": {
@@ -37,7 +37,7 @@
         }
     },
     "cat-face": {
-        "ExpectedComponents": [ [ 0, 1, 2, 4, 5, 3 ] ],
+        "ExpectedComponents": [ [ 0, 1, 2, 3, 4, 5 ] ],
         "NumVertices": 6,
         "Directed": false,
         "Adj": {
@@ -87,7 +87,7 @@
     },
     "4-cycle": {
         "NumVertices": 4,
-        "ExpectedComponents": [ [ 0, 1, 3, 2 ] ],
+        "ExpectedComponents": [ [ 0, 1, 2, 3 ] ],
         "Directed": false,
         "Adj": {
             "0": [ 1, 3 ],
@@ -97,7 +97,7 @@
         }
     },
     "5-cycle": {
-        "ExpectedComponents": [ [ 0, 1, 4, 2, 3 ] ],
+        "ExpectedComponents": [ [ 0, 1, 2, 3, 4 ] ],
         "NumVertices": 5,
         "Directed": false,
         "Adj": {
@@ -109,7 +109,7 @@
         }
     },
     "6-cycle": {
-        "ExpectedComponents": [ [ 0, 1, 5, 2, 4, 3 ] ],
+        "ExpectedComponents": [ [ 0, 1, 2, 3, 4, 5 ] ],
         "NumVertices": 6,
         "Directed": false,
         "Adj": {
@@ -122,7 +122,7 @@
         }
     },
     "skiena-fig-5.9": {
-        "ExpectedComponents": [ [ 0, 1, 2, 5, 3, 4 ] ],
+        "ExpectedComponents": [ [ 0, 1, 2, 3, 4, 5 ] ],
         "NumVertices": 6,
         "Directed": false,
         "Adj": {

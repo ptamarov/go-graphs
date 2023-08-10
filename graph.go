@@ -4,7 +4,6 @@ type Graph struct {
 	numVertices     int
 	numEdges        int
 	directed        bool
-	components      [][]int
 	adj             map[int][]int
 	ProcessNode     func(int) error
 	ProcessNodeLate func(int) error
@@ -64,14 +63,6 @@ func NewDirected(NumVertices int, Adj map[int][]int) (Graph, error) {
 	g.ProcessNodeLate = func(i int) error { return nil }
 
 	return g, nil
-}
-
-// ConnectedComponents counts the number of connected components of the graph.
-func (g *Graph) ConnectedComponents() [][]int {
-	if len(g.components) == 0 {
-		g.updateConnectedComponents()
-	}
-	return g.components
 }
 
 // Order returns the number of nodes in the graph.

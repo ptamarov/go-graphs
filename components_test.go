@@ -15,8 +15,7 @@ func TestComponentFinding(t *testing.T) {
 				t.Errorf("while generating graph: %s", err)
 			}
 
-			g.updateConnectedComponents()
-			got := g.components
+			got := g.ConnectedComponents()
 			want := test.ExpectedComponents
 			if len(got) != len(want) {
 				t.Errorf("got component size %d different from expected size %d", len(got), len(want))
