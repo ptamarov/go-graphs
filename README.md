@@ -102,7 +102,7 @@ func main() {
 	// initialize graph and perform breadth first search
 	g, err = graph.New(5, map[int][]int{0: {1, 2, 3, 4}, 1: {0, 2}, 2: {0, 1}, 3: {0, 4}, 4: {0, 3}})
 	if err != nil {
-		t.Error(err)
+		fmt.Printf("while running bfs: %s\n", err)
 	}
 
 	g.ProcessNode = appendToSearchResult
@@ -169,7 +169,7 @@ func main() {
 		11: {7},
 	})
 	if err != nil {
-		t.Error(err)
+		fmt.Printf("while creating graph: %s\n", err)
 	}
 
 	g.ProcessNode = findSpecificVertex
