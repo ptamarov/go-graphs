@@ -23,12 +23,7 @@ func New(NumVertices int, Adj map[int][]int) (Graph, error) {
 		count += len(g.adj[i])
 	}
 
-	if g.directed {
-		g.numEdges = count
-	} else {
-		g.numEdges = count / 2
-	}
-
+	g.numEdges = count / 2
 	g.ProcessNode = func(i int) error { return nil }
 	g.ProcessEdge = func(i1, i2 int) error { return nil }
 	g.ProcessNodeLate = func(i int) error { return nil }
@@ -52,12 +47,7 @@ func NewDirected(NumVertices int, Adj map[int][]int) (Graph, error) {
 		count += len(g.adj[i])
 	}
 
-	if g.directed {
-		g.numEdges = count
-	} else {
-		g.numEdges = count / 2
-	}
-
+	g.numEdges = count
 	g.ProcessEdge = func(i1, i2 int) error { return nil }
 	g.ProcessNode = func(i int) error { return nil }
 	g.ProcessNodeLate = func(i int) error { return nil }
